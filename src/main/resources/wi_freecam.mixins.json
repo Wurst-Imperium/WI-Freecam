@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "net.wimods.freecam.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "CameraMixin",
+    "GameRendererMixin",
+    "GuiMixin",
+    "ItemInHandRendererMixin",
+    "KeyBindsListMixin",
+    "KeyMappingCategoryMixin",
+    "KeyMappingMixin",
+    "LanguageManagerMixin",
+    "LevelRendererMixin",
+    "LocalPlayerMixin",
+    "MouseHandlerMixin",
+    "VisGraphMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

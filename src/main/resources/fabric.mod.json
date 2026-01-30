@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "wi_freecam",
+  "version": "${version}",
+  "name": "WI Freecam",
+  "description": "Allows you to move the camera without moving your character. As seen in Wurst.",
+  "authors": [
+    "Alexander01998"
+  ],
+  "contact": {
+    "homepage": "https://www.wimods.net/freecam/modmenu-homepage/",
+    "sources": "https://www.wimods.net/freecam/modmenu-sources/",
+    "issues": "https://www.wimods.net/freecam/modmenu-issues/"
+  },
+  "license": "GPL-3.0-or-later",
+  "icon": "assets/wi_freecam/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.wimods.freecam.WiFreecamInitializer"
+    ],
+    "modmenu": [
+      "net.wimods.freecam.WiFreecamModMenuApi"
+    ]
+  },
+  "mixins": [
+    "wi_freecam.mixins.json"
+  ],
+  "accessWidener": "wi_freecam.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "fabric-api": ">=0.140.0",
+    "minecraft": "~1.21.11-beta.1",
+    "java": ">=21"
+  },
+  "suggests": {
+    "chestesp": "*",
+    "mo_glass": "*",
+    "wi_zoom": "*"
+  },
+  "breaks": {
+    "wurst": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.donate": "https://www.wimods.net/freecam/modmenu-donate/",
+        "modmenu.twitter": "https://www.wimods.net/freecam/modmenu-twitter/",
+        "Forum": "https://www.wimods.net/freecam/modmenu-forum/"
+      }
+    }
+  }
+}

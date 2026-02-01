@@ -14,7 +14,7 @@
     "LevelRendererMixin",
     "LocalPlayerMixin",
     "MouseHandlerMixin",
-    "VisGraphMixin"
+    "SectionOcclusionGraphMixin"
   ],
   "injectors": {
     "defaultRequire": 1

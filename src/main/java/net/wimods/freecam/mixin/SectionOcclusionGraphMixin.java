@@ -9,27 +9,30 @@ package net.wimods.freecam.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.client.renderer.chunk.VisGraph;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.SectionOcclusionGraph;
+import net.minecraft.client.renderer.chunk.SectionMesh;
+import net.minecraft.core.Direction;
 import net.wimods.freecam.WiFreecam;
 
-@Mixin(VisGraph.class)
-public class VisGraphMixin
+@Mixin(SectionOcclusionGraph.class)
+public class SectionOcclusionGraphMixin
 {
 	/**
 	 * Turns off the visibility graph when in Freecam, making things like caves
 	 * become visible that would normally be hidden behind other blocks and thus
 	 * skipped for better rendering performance.
 	 */
-	@Inject(at = @At("HEAD"),
-		method = "setOpaque(Lnet/minecraft/core/BlockPos;)V",
-		cancellable = true)
-	private void onSetOpaque(BlockPos pos, CallbackInfo ci)
+	@Redirect(at = @At(value = "INVOKE",
+		target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;facesCanSeeEachother(Lnet/minecraft/core/Direction;Lnet/minecraft/core/Direction;)Z"),
+		method = "runUpdates")
+	private boolean onFacesCanSeeEachother(SectionMesh mesh, Direction from,
+		Direction to)
 	{
 		if(WiFreecam.INSTANCE.isEnabled())
-			ci.cancel();
+			return true;
+		
+		return mesh.facesCanSeeEachother(from, to);
 	}
 }

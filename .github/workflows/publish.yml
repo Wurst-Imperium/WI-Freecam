@@ -90,7 +90,7 @@ jobs:
 
     - name: Build website update inputs
       id: website_inputs
-      if: ${{ inputs.update_website }}
+      if: ${{ inputs.update_website || inputs.upload_backups }}
       run: |
         echo "mod_version=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2 | tr -d ' \r' | sed 's/-MC.*$//')" >> "$GITHUB_OUTPUT"
         echo "mc_version=$(grep '^minecraft_version=' gradle.properties | cut -d'=' -f2 | tr -d ' \r')" >> "$GITHUB_OUTPUT"

@@ -30,7 +30,7 @@ public abstract class GuiMixin
 	private void onRenderTabList(GuiGraphics context, DeltaTracker tickCounter,
 		CallbackInfo ci)
 	{
-		if(WiFreecam.MC.debugEntries.isOverlayVisible())
+		if(WiFreecam.MC.debugEntries.isF3Visible())
 			return;
 		
 		float tickDelta = tickCounter.getGameTimeDeltaPartialTick(true);

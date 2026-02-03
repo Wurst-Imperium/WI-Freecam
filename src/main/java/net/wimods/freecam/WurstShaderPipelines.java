@@ -15,7 +15,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public enum WurstShaderPipelines
 {
@@ -27,11 +27,12 @@ public enum WurstShaderPipelines
 	public static final Snippet FOGLESS_LINES_SNIPPET = RenderPipeline
 		.builder(RenderPipelines.MATRICES_FOG_SNIPPET,
 			RenderPipelines.GLOBALS_SNIPPET)
-		.withVertexShader(Identifier.parse("wi_freecam:core/fogless_lines"))
-		.withFragmentShader(Identifier.parse("wi_freecam:core/fogless_lines"))
+		.withVertexShader(
+			ResourceLocation.parse("wi_freecam:core/fogless_lines"))
+		.withFragmentShader(
+			ResourceLocation.parse("wi_freecam:core/fogless_lines"))
 		.withBlend(BlendFunction.TRANSLUCENT).withCull(false)
-		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH,
-			Mode.LINES)
+		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL, Mode.LINES)
 		.buildSnippet();
 	
 	/**
@@ -39,7 +40,7 @@ public enum WurstShaderPipelines
 	 */
 	public static final RenderPipeline DEPTH_TEST_LINES =
 		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
-			.withLocation(Identifier
+			.withLocation(ResourceLocation
 				.parse("wi_freecam:pipeline/wi_freecam_depth_test_lines"))
 			.build());
 	
@@ -48,7 +49,7 @@ public enum WurstShaderPipelines
 	 */
 	public static final RenderPipeline ESP_LINES =
 		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
-			.withLocation(
-				Identifier.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
+			.withLocation(ResourceLocation
+				.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
 			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST).build());
 }

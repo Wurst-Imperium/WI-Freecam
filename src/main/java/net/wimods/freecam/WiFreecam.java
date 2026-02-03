@@ -145,9 +145,10 @@ public enum WiFreecam
 		Vec2 moveVector = player.input.getMoveVector();
 		
 		// Convert to world coordinates
-		double yawRad = MC.gameRenderer.getMainCamera().yRot() * Mth.DEG_TO_RAD;
-		double sinYaw = Mth.sin(yawRad);
-		double cosYaw = Mth.cos(yawRad);
+		double yawRad =
+			MC.gameRenderer.getMainCamera().getYRot() * Mth.DEG_TO_RAD;
+		double sinYaw = Math.sin(yawRad);
+		double cosYaw = Math.cos(yawRad);
 		double offsetX = moveVector.x * cosYaw - moveVector.y * sinYaw;
 		double offsetZ = moveVector.x * sinYaw + moveVector.y * cosYaw;
 		

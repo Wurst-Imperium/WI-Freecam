@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.wimods.freecam.WiFreecam;
 
 @Mixin(KeyMapping.Category.class)
@@ -24,7 +24,7 @@ public class KeyMappingCategoryMixin
 {
 	@Shadow
 	@Final
-	private Identifier id;
+	private ResourceLocation id;
 	
 	/**
 	 * Translates Freecam's keybind category using Freecam's translator instead

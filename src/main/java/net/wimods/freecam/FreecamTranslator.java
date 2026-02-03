@@ -25,7 +25,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.ClientLanguage;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.locale.Language;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.KnownPack;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -189,8 +189,8 @@ public final class FreecamTranslator implements ResourceManagerReloadListener
 		for(String langCode : langCodes)
 		{
 			String langFilePath = "translations/" + langCode + ".json";
-			Identifier langId =
-				Identifier.fromNamespaceAndPath("wi_freecam", langFilePath);
+			ResourceLocation langId = ResourceLocation
+				.fromNamespaceAndPath("wi_freecam", langFilePath);
 			
 			// IMPORTANT: Exceptions thrown by Language.loadFromJson() must
 			// be caught to prevent mod detection vulnerabilities using

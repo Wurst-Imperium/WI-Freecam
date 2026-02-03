@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.waypoints.TrackedWaypoint;
 import net.wimods.freecam.WiFreecam;
@@ -27,10 +27,10 @@ public abstract class CameraMixin implements TrackedWaypoint.Camera
 	private boolean detached;
 	
 	@Inject(at = @At("RETURN"),
-		method = "setup(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;ZZF)V",
+		method = "setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V",
 		cancellable = false)
-	public void onSetup(Level level, Entity entity, boolean bl, boolean bl2,
-		float partialTicks, CallbackInfo ci)
+	public void onSetup(BlockGetter level, Entity entity, boolean bl,
+		boolean bl2, float partialTicks, CallbackInfo ci)
 	{
 		WiFreecam freecam = WiFreecam.INSTANCE;
 		if(!freecam.isEnabled())

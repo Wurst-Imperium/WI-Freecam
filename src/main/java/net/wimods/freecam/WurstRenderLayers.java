@@ -7,40 +7,45 @@
  */
 package net.wimods.freecam;
 
-import net.minecraft.client.renderer.rendertype.LayeringTransform;
-import net.minecraft.client.renderer.rendertype.OutputTarget;
-import net.minecraft.client.renderer.rendertype.RenderSetup;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import java.util.OptionalDouble;
+
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
 
 public enum WurstRenderLayers
 {
 	;
 	
 	/**
-	 * Similar to {@link RenderType#getLines()}, but with line width 2.
+	 * Similar to {@link RenderType#lines()}, but with line width 2.
 	 */
-	public static final RenderType LINES = RenderType.create("wi_freecam:lines",
-		RenderSetup.builder(WurstShaderPipelines.DEPTH_TEST_LINES)
-			.setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
-			.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
-			.createRenderSetup());
+	public static final RenderType.CompositeRenderType LINES = RenderType
+		.create("wi_freecam:lines", 1536, WurstShaderPipelines.DEPTH_TEST_LINES,
+			RenderType.CompositeState.builder()
+				.setLineState(
+					new RenderStateShard.LineStateShard(OptionalDouble.of(2)))
+				.setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
+				.setOutputState(RenderType.ITEM_ENTITY_TARGET)
+				.createCompositeState(false));
 	
 	/**
-	 * Similar to {@link RenderType#getLines()}, but with line width 2 and no
+	 * Similar to {@link RenderType#lines()}, but with line width 2 and no
 	 * depth test.
 	 */
-	public static final RenderType ESP_LINES =
-		RenderType.create("wi_freecam:esp_lines",
-			RenderSetup.builder(WurstShaderPipelines.ESP_LINES)
-				.setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
-				.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
-				.createRenderSetup());
+	public static final RenderType.CompositeRenderType ESP_LINES = RenderType
+		.create("wi_freecam:esp_lines", 1536, WurstShaderPipelines.ESP_LINES,
+			RenderType.CompositeState.builder()
+				.setLineState(
+					new RenderStateShard.LineStateShard(OptionalDouble.of(2)))
+				.setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
+				.setOutputState(RenderType.ITEM_ENTITY_TARGET)
+				.createCompositeState(false));
 	
 	/**
 	 * Returns either {@link #LINES} or {@link #ESP_LINES} depending on the
 	 * value of {@code depthTest}.
 	 */
-	public static RenderType getLines(boolean depthTest)
+	public static RenderType.CompositeRenderType getLines(boolean depthTest)
 	{
 		return depthTest ? LINES : ESP_LINES;
 	}

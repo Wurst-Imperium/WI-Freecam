@@ -26,8 +26,8 @@ import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder;
 import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
 import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
@@ -66,8 +66,8 @@ public final class WiFreecamTest implements FabricClientGameTest
 			String mcVersion = SharedConstants.getCurrentVersion().name();
 			creator.setName("E2E Test " + mcVersion);
 			creator.setGameMode(WorldCreationUiState.SelectedGameMode.CREATIVE);
-			creator.getGameRules().set(GameRules.SEND_COMMAND_FEEDBACK, false,
-				null);
+			creator.getGameRules().getRule(GameRules.RULE_SENDCOMMANDFEEDBACK)
+				.set(false, null);
 			applyFlatPresetWithSmoothStone(creator);
 		});
 		
@@ -86,12 +86,6 @@ public final class WiFreecamTest implements FabricClientGameTest
 		TestInput input = context.getInput();
 		TestClientWorldContext world = spContext.getClientWorld();
 		TestServerContext server = spContext.getServer();
-		
-		// Disable anisotropic filtering
-		context.runOnClient(mc -> mc.options.maxAnisotropyBit().set(0));
-		
-		// Disable chunk fade
-		context.runOnClient(mc -> mc.options.chunkSectionFadeInTime().set(0.0));
 		
 		runCommand(server, "time set noon");
 		runCommand(server, "tp 0 -57 0");
@@ -146,13 +140,15 @@ public final class WiFreecamTest implements FabricClientGameTest
 			pressKeyWithModifiers(context, GLFW.GLFW_KEY_TAB,
 				GLFW.GLFW_MOD_SHIFT);
 		assertScreenshotEquals(context, "freecam_keybind_default",
-			"https://i.imgur.com/291TsOi.png");
+			"https://i.imgur.com/GOLyb6L.png");
 		
 		LOGGER.info("Changing switch control keybind to B");
+		// Go up one entry so that "Switch Camera/Player Control" is selected
+		pressKeyWithModifiers(context, GLFW.GLFW_KEY_TAB, GLFW.GLFW_MOD_SHIFT);
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		input.pressKey(GLFW.GLFW_KEY_B);
 		assertScreenshotEquals(context, "switch_control_keybind_changed",
-			"https://i.imgur.com/pDgINGm.png");
+			"https://i.imgur.com/6xfAcmN.png");
 		
 		LOGGER.info("Closing screens");
 		for(int i = 0; i < 4; i++)

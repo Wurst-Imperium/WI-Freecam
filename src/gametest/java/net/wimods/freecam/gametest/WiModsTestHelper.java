@@ -36,8 +36,8 @@ import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCompa
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm.RawImage;
 import net.fabricmc.fabric.impl.client.gametest.screenshot.TestScreenshotComparisonAlgorithms.RawImageImpl;
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
-import net.fabricmc.fabric.mixin.client.gametest.input.KeyboardHandlerAccessor;
-import net.fabricmc.fabric.mixin.client.gametest.input.MouseHandlerAccessor;
+import net.fabricmc.fabric.mixin.client.gametest.input.KeyboardAccessor;
+import net.fabricmc.fabric.mixin.client.gametest.input.MouseAccessor;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -283,8 +283,7 @@ public enum WiModsTestHelper
 	{
 		Key key = InputConstants.Type.KEYSYM.getOrCreate(keyCode);
 		context.runOnClient(mc -> {
-			KeyboardHandlerAccessor kb =
-				(KeyboardHandlerAccessor)mc.keyboardHandler;
+			KeyboardAccessor kb = (KeyboardAccessor)mc.keyboardHandler;
 			long handle = mc.getWindow().handle();
 			kb.invokeOnKey(handle, GLFW.GLFW_PRESS,
 				new KeyEvent(key.getValue(), 0, modifiers));
@@ -298,7 +297,7 @@ public enum WiModsTestHelper
 	{
 		Key key = InputConstants.Type.MOUSE.getOrCreate(mouseButton);
 		context.runOnClient(mc -> {
-			MouseHandlerAccessor ms = (MouseHandlerAccessor)mc.mouseHandler;
+			MouseAccessor ms = (MouseAccessor)mc.mouseHandler;
 			long handle = mc.getWindow().handle();
 			ms.invokeOnMouseButton(handle,
 				new MouseButtonInfo(key.getValue(), modifiers),

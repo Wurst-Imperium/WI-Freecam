@@ -18,12 +18,12 @@ import com.mojang.blaze3d.platform.InputConstants.Type;
 
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public final class FreecamKeybinds
 {
-	public final KeyMapping.Category category = KeyMapping.Category
-		.register(Identifier.fromNamespaceAndPath("wi_freecam", "wi_freecam"));
+	public final KeyMapping.Category category = KeyMapping.Category.register(
+		ResourceLocation.fromNamespaceAndPath("wi_freecam", "wi_freecam"));
 	
 	private final ArrayList<KeyMapping> all = new ArrayList<>();
 	
@@ -54,8 +54,7 @@ public final class FreecamKeybinds
 	
 	private KeyMapping key(String name, Type type, int keyCode)
 	{
-		KeyMapping key =
-			new KeyMapping(name, type, keyCode, category, all.size());
+		KeyMapping key = new KeyMapping(name, type, keyCode, category);
 		all.add(key);
 		KeyBindingHelper.registerKeyBinding(key);
 		return key;

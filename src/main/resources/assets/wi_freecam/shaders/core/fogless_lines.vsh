@@ -7,7 +7,6 @@
 in vec3 Position;
 in vec4 Color;
 in vec3 Normal;
-in float LineWidth;
 
 out vec4 vertexColor;
 

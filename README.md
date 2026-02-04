@@ -1,20 +1,10 @@
 # WI Freecam (Wurst-Imperium Freecam) ![](https://img.wimods.net/github.com/Wurst-Imperium/WI-Freecam)
 
-## Why you should use a Freecam
+WI Freecam allows you to detach your camera and move it around freely while your character stays in place. It's the photo mode that Mojang never added. Spectator mode except it doesn't move your character and works on any server. The literal perspective shift you need to become a better builder.
 
-From the moment you punch your first tree in Minecraft, you're locked into a singular, stubborn perspective: your own. Whether in first-person or the slightly removed third-person view, the camera is always anchored to your character's physical position, a limitation that becomes increasingly apparent as your projects become more ambitious.
-
-Have you ever built a giant dirt tower just to get a better view of your village? Ever wasted half a stack of rockets trying to take a screenshot of your skyscraper from the perfect angle? Ever dug up all your hidden redstone because you forgot how it works? These are the signs you need a Freecam.
-
-Freecam allows you to detach your camera and move it around freely while your character stays in place. It's the photo mode that Mojang never added. Spectator mode except it doesn't move your character and works on any server. The literal perspective shift you need to become a better builder.
+Have you ever built a giant dirt tower just to get a better view of your village? Ever wasted half a stack of rockets trying to take a screenshot of your skyscraper from the perfect angle? Ever dug up all your hidden redstone because you forgot how it works? These are common signs that you need a Freecam.
 
 ## Why choose WI Freecam
-
-### A proper modern Freecam
-
-Most Freecam mods are built on decade-old workarounds. Some freeze your movement packets, others spawn a fake camera entity. Both methods mess up the game's physics, which then requires dozens of messy patches to deal with the side effects.
-
-WI Freecam does something radically simpler: **we just move the camera**. No fake entities. No frozen packets. No physics workarounds. The camera is just a coordinate: no hitbox, no collision, no name tag, no problems. This wasn't possible in older Minecraft versions, but clinging to outdated fakery today is unnecessary. WI Freecam is what Freecam should have always been.
 
 ### Movement controls that don't suck
 
@@ -28,13 +18,33 @@ You shouldn't have to fight your tools to position a camera.
 
 - Vertical speed that actually makes sense. WI Freecam stores your preferred *ratio* between horizontal and vertical speed, not an absolute value that you then have to re-adjust every time. Set it to 50% once and it will always be half as fast as your horizontal speed.
 
+- Precise input mode. CTRL-click on any slider and type in the exact number you want, instead of fiddling with the mouse for 20 minutes because you're one pixel off.
+
+### Always up to date
+
+I'm tired of mods that take forever to update when a new Minecraft version comes out. You should be too. "Long term modding version" is a made-up concept by modders who either can't escape dependency hell or stopped playing Minecraft years ago.
+
+WI Freecam provides day one support for every new Minecraft version, usually within **30 minutes** of release. That's right, minutes, not weeks! Snapshots are supported too, though those can take a bit longer if they break something.
+
+How is this possible?
+
+First, through lots of automation. As soon as a new Minecraft version is released, a robot compiles the mod against that version, runs it, and goes through a big testing routine where it does everything you could possibly do in the mod at a ridiculously fast speed ([it's quite fun to watch](https://www.youtube.com/watch?v=fKRFiPcDbfw)). If all tests pass, it then also releases the mod automatically. But if even one pixel looks different, it instead tells me what went wrong so I can get straight to fixing it.
+
+Second, because I built WI Freecam using my own custom settings engine instead of relying on an off-the-shelf config library. You can have the best snapshot automation in the world, but that won't help you at all if you're stuck waiting for Cloth Config to update (as I found out the hard way in my last mod).
+
+### A proper modern Freecam
+
+Most Freecam mods are built on decade-old workarounds. Some freeze your movement packets, others spawn a fake camera entity. Both methods mess up the game's physics, which then requires dozens of messy patches to deal with the side effects.
+
+WI Freecam does something radically simpler: **it just moves the camera**. No fake entities. No frozen packets. No physics workarounds. The camera is just a coordinate: no hitbox, no collision, no name tag, no problems. This wasn't possible in older Minecraft versions, but clinging to outdated fakery today is unnecessary. WI Freecam is what Freecam should have always been.
+
 ### Safe to use on servers
 
 I can't believe this is a standout feature, but WI Freecam seems to be the only Freecam mod that isn't vulnerable to translation exploits like [MC-265322](https://bugs.mojang.com/browse/MC/issues/MC-265322) ([link with more info](https://wurst.wiki/sign_translation_vulnerability)).
 
 It sucks that Mojang still hasn't patched this bug (it's been around since 1.20), but at the same time you should be able to just install a mod and expect it to be safe. There's a certain other Freecam mod developer out there who tells you that this exploit exists but then just goes "good luck, I'm not gonna do anything about it", which I find extremely irresponsible.
 
-We still have translations and keybinds by the way. Don't believe anyone who tells you that's not possible.
+WI Freecam still has translations and keybinds by the way. Don't believe anyone who tells you that's not possible.
 
 ## Feature List
 
@@ -87,7 +97,7 @@ Disclosure: This mod collects anonymous version statistics, which help me decide
 - English (US)
 - German (Germany)
 
-Pull requests welcome - add your native language!
+Pull requests welcome - [add your native language](https://github.com/Wurst-Imperium/WI-Freecam/tree/master/src/main/resources/assets/wi_freecam/translations)!
 
 ## Development Setup
 

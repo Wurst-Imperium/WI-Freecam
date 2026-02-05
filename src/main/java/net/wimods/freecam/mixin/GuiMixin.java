@@ -7,7 +7,9 @@
  */
 package net.wimods.freecam.mixin;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,12 +17,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.wimods.freecam.FreecamHud;
-import net.wimods.freecam.WiFreecam;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin
 {
+	@Shadow
+	@Final
+	private DebugScreenOverlay debugOverlay;
+	
 	/*
 	 * This mixin needs to run after renderScoreboardSidebar()
 	 * and before tabList.setVisible()
@@ -30,7 +36,7 @@ public abstract class GuiMixin
 	private void onRenderTabList(GuiGraphics context, DeltaTracker tickCounter,
 		CallbackInfo ci)
 	{
-		if(WiFreecam.MC.debugEntries.isF3Visible())
+		if(debugOverlay.showDebugScreen())
 			return;
 		
 		float tickDelta = tickCounter.getGameTimeDeltaPartialTick(true);

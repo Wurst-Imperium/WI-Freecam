@@ -97,7 +97,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		world.waitForChunksRender();
 		
 		assertScreenshotEquals(context, "in_game",
-			"https://i.imgur.com/i2Nr9is.png");
+			"https://i.imgur.com/l37R4VV.png");
 		
 		LOGGER.info("Recording debug menu");
 		input.pressKey(GLFW.GLFW_KEY_F3);
@@ -137,18 +137,23 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		// Select the last keybind in the list
 		for(int i = 0; i < 2; i++)
-			pressKeyWithModifiers(context, GLFW.GLFW_KEY_TAB,
-				GLFW.GLFW_MOD_SHIFT);
+		{
+			input.holdShift();
+			input.pressKey(GLFW.GLFW_KEY_TAB);
+			input.releaseShift();
+		}
 		assertScreenshotEquals(context, "freecam_keybind_default",
-			"https://i.imgur.com/GOLyb6L.png");
+			"https://i.imgur.com/ae8TyOP.png");
 		
 		LOGGER.info("Changing switch control keybind to B");
 		// Go up one entry so that "Switch Camera/Player Control" is selected
-		pressKeyWithModifiers(context, GLFW.GLFW_KEY_TAB, GLFW.GLFW_MOD_SHIFT);
+		input.holdShift();
+		input.pressKey(GLFW.GLFW_KEY_TAB);
+		input.releaseShift();
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		input.pressKey(GLFW.GLFW_KEY_B);
 		assertScreenshotEquals(context, "switch_control_keybind_changed",
-			"https://i.imgur.com/6xfAcmN.png");
+			"https://i.imgur.com/ie3et9I.png");
 		
 		LOGGER.info("Closing screens");
 		for(int i = 0; i < 4; i++)
@@ -251,8 +256,9 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
 		input.setCursorPos(150, 120);
-		pressMouseWithModifiers(context, GLFW.GLFW_MOUSE_BUTTON_LEFT,
-			GLFW.GLFW_MOD_CONTROL);
+		input.holdControl();
+		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		input.releaseControl();
 		context.waitForScreen(EditSliderScreen.class);
 		assertScreenshotEquals(context, "edit_horizontal_speed_screen",
 			"https://i.imgur.com/F8qpnqX.png");
@@ -323,11 +329,11 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals(context,
 			"clickgui_initial_position_dropdown_open",
-			"https://i.imgur.com/PScz2kR.png");
+			"https://i.imgur.com/CrsGHEH.png");
 		input.setCursorPos(250, 270);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals(context, "clickgui_initial_position_in_front",
-			"https://i.imgur.com/h8XNFLX.png");
+			"https://i.imgur.com/WSPD9TU.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
 				.getSelected() == InitialPosition.IN_FRONT,
@@ -340,7 +346,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		context.waitTick();
 		world.waitForChunksRender();
 		assertScreenshotEquals(context, "freecam_start_in_front",
-			"https://i.imgur.com/nrMP191.png");
+			"https://i.imgur.com/HMEeLXG.png");
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
 		world.waitForChunksRender();
@@ -354,7 +360,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.setCursorPos(250, 290);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals(context, "clickgui_initial_position_above",
-			"https://i.imgur.com/Eibc0HO.png");
+			"https://i.imgur.com/TJEN5x5.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
 				.getSelected() == InitialPosition.ABOVE,
@@ -367,7 +373,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		context.waitTick();
 		world.waitForChunksRender();
 		assertScreenshotEquals(context, "freecam_start_above",
-			"https://i.imgur.com/3LbAtRj.png");
+			"https://i.imgur.com/0hxZrXZ.png");
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
 		world.waitForChunksRender();
@@ -391,7 +397,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.holdKeyFor(GLFW.GLFW_KEY_S, 2);
 		input.holdKeyFor(GLFW.GLFW_KEY_SPACE, 1);
 		assertScreenshotEquals(context, "freecam_moved",
-			"https://i.imgur.com/HxrcHbh.png");
+			"https://i.imgur.com/ymQETaB.png");
 		
 		// Enable tracer
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -399,20 +405,20 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.setCursorPos(150, 270);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals(context, "clickgui_tracer_enabled",
-			"https://i.imgur.com/8Kh81kn.png");
+			"https://i.imgur.com/vZrITbR.png");
 		assertTrue(WiFreecam.INSTANCE.getSettings().tracer.isChecked(),
 			"Enabling tracer didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals(context, "freecam_tracer",
-			"https://i.imgur.com/z3pQumc.png");
+			"https://i.imgur.com/wX7lRcE.png");
 		
 		// Change tracer color to cyan
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
 		input.setCursorPos(150, 320);
 		assertScreenshotEquals(context, "clickgui_tracer_color_hovered",
-			"https://i.imgur.com/PnmCGmV.png");
+			"https://i.imgur.com/OhOVefj.png");
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		context.waitForScreen(EditColorScreen.class);
 		assertScreenshotEquals(context, "edit_color_screen",
@@ -424,11 +430,11 @@ public final class WiFreecamTest implements FabricClientGameTest
 			"Changing tracer color to cyan didn't work");
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals(context, "clickgui_tracer_color_changed",
-			"https://i.imgur.com/mQSMZWJ.png");
+			"https://i.imgur.com/TfoOeOJ.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals(context, "freecam_tracer_cyan",
-			"https://i.imgur.com/Utkf8ld.png");
+			"https://i.imgur.com/pqblNRb.png");
 		
 		// Reset tracer color
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -446,7 +452,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(false);
 		context.waitTick();
 		assertScreenshotEquals(context, "freecam_with_hand",
-			"https://i.imgur.com/6tahHsE.png");
+			"https://i.imgur.com/MO5bDzO.png");
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(true);
 		
 		// Enable player movement, walk forward, and turn around
@@ -461,7 +467,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		}
 		context.waitTick();
 		assertScreenshotEquals(context, "freecam_player_moved",
-			"https://i.imgur.com/SBjBX8v.png");
+			"https://i.imgur.com/pkocXYw.png");
 		WiFreecam.INSTANCE.getSettings().applyInputTo
 			.setSelected(ApplyInputTo.CAMERA);
 		input.pressKey(GLFW.GLFW_KEY_U);

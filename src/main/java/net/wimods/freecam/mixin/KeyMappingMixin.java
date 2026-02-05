@@ -19,7 +19,6 @@ import com.google.common.collect.Maps;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.Window;
 
 import net.minecraft.client.KeyMapping;
 import net.wimods.freecam.WiFreecam;
@@ -36,13 +35,13 @@ public abstract class KeyMappingMixin implements IKeyMapping
 	@Deprecated // use IKeyMapping.isActuallyDown() instead
 	public boolean freecam_isActuallyDown()
 	{
-		Window window = WiFreecam.MC.getWindow();
+		long handle = WiFreecam.MC.getWindow().getWindow();
 		int code = key.getValue();
 		
 		if(key.getType() == InputConstants.Type.MOUSE)
-			return GLFW.glfwGetMouseButton(window.handle(), code) == 1;
+			return GLFW.glfwGetMouseButton(handle, code) == 1;
 		
-		return InputConstants.isKeyDown(window, code);
+		return InputConstants.isKeyDown(handle, code);
 	}
 	
 	/*

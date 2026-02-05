@@ -9,7 +9,7 @@ package net.wimods.freecam.clickgui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.input.MouseButtonEvent;
+
 import net.wimods.freecam.WiFreecam;
 
 public abstract class Component
@@ -24,8 +24,7 @@ public abstract class Component
 	
 	private Window parent;
 	
-	public void handleMouseClick(double mouseX, double mouseY, int mouseButton,
-		MouseButtonEvent context)
+	public void handleMouseClick(double mouseX, double mouseY, int mouseButton)
 	{
 		
 	}

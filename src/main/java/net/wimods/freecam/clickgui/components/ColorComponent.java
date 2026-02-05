@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.input.MouseButtonEvent;
+
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.clickgui.ClickGui;
 import net.wimods.freecam.clickgui.Component;
@@ -37,8 +37,7 @@ public final class ColorComponent extends Component
 	}
 	
 	@Override
-	public void handleMouseClick(double mouseX, double mouseY, int mouseButton,
-		MouseButtonEvent context)
+	public void handleMouseClick(double mouseX, double mouseY, int mouseButton)
 	{
 		if(mouseY < getY() + TEXT_HEIGHT)
 			return;

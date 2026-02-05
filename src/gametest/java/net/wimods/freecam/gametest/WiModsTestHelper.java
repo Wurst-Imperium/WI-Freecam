@@ -21,11 +21,8 @@ import java.util.Base64;
 import java.util.UUID;
 
 import org.joml.Vector2i;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -36,11 +33,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCompa
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm.RawImage;
 import net.fabricmc.fabric.impl.client.gametest.screenshot.TestScreenshotComparisonAlgorithms.RawImageImpl;
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
-import net.fabricmc.fabric.mixin.client.gametest.input.KeyboardAccessor;
-import net.fabricmc.fabric.mixin.client.gametest.input.MouseAccessor;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.commands.CommandSourceStack;
 
 public enum WiModsTestHelper
@@ -276,36 +269,6 @@ public enum WiModsTestHelper
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	public static void pressKeyWithModifiers(ClientGameTestContext context,
-		int keyCode, int modifiers)
-	{
-		Key key = InputConstants.Type.KEYSYM.getOrCreate(keyCode);
-		context.runOnClient(mc -> {
-			KeyboardAccessor kb = (KeyboardAccessor)mc.keyboardHandler;
-			long handle = mc.getWindow().handle();
-			kb.invokeOnKey(handle, GLFW.GLFW_PRESS,
-				new KeyEvent(key.getValue(), 0, modifiers));
-			kb.invokeOnKey(handle, GLFW.GLFW_RELEASE,
-				new KeyEvent(key.getValue(), 0, modifiers));
-		});
-	}
-	
-	public static void pressMouseWithModifiers(ClientGameTestContext context,
-		int mouseButton, int modifiers)
-	{
-		Key key = InputConstants.Type.MOUSE.getOrCreate(mouseButton);
-		context.runOnClient(mc -> {
-			MouseAccessor ms = (MouseAccessor)mc.mouseHandler;
-			long handle = mc.getWindow().handle();
-			ms.invokeOnMouseButton(handle,
-				new MouseButtonInfo(key.getValue(), modifiers),
-				GLFW.GLFW_PRESS);
-			ms.invokeOnMouseButton(handle,
-				new MouseButtonInfo(key.getValue(), modifiers),
-				GLFW.GLFW_RELEASE);
-		});
 	}
 	
 	public static void assertTrue(boolean condition, String message)

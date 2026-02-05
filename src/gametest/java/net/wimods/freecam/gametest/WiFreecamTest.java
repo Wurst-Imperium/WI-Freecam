@@ -461,7 +461,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		}
 		context.waitTick();
 		assertScreenshotEquals(context, "freecam_player_moved",
-			"https://i.imgur.com/mf6NgQl.png");
+			"https://i.imgur.com/SBjBX8v.png");
 		WiFreecam.INSTANCE.getSettings().applyInputTo
 			.setSelected(ApplyInputTo.CAMERA);
 		input.pressKey(GLFW.GLFW_KEY_U);

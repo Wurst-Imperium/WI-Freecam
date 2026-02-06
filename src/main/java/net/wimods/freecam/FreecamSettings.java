@@ -34,7 +34,7 @@ public final class FreecamSettings
 	public final SliderSetting verticalSpeed = new SliderSetting(
 		"Vertical speed", "description.wurst.setting.freecam.vertical_speed", 1,
 		0.05, 5, 0.05,
-		v -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
+		_ -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
 	
 	public final CheckboxSetting scrollToChangeSpeed =
 		new CheckboxSetting("Scroll to change speed",

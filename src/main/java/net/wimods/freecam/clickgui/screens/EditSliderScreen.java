@@ -56,7 +56,7 @@ public final class EditSliderScreen extends Screen
 		setFocused(valueField);
 		valueField.setFocused(true);
 		
-		doneButton = Button.builder(Component.literal("Done"), b -> done())
+		doneButton = Button.builder(Component.literal("Done"), _ -> done())
 			.bounds(x1, y2, 200, 20).build();
 		addRenderableWidget(doneButton);
 	}

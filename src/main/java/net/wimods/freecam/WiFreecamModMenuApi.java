@@ -17,7 +17,7 @@ public final class WiFreecamModMenuApi implements ModMenuApi
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory()
 	{
-		return parent -> {
+		return _ -> {
 			WiFreecam freecam = WiFreecam.INSTANCE;
 			freecam.getPlausible().pageview("/config");
 			return new ClickGuiScreen(freecam.getGui());

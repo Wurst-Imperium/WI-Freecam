@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.TestInput;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientLevelContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder;
@@ -84,7 +84,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		TestSingleplayerContext spContext)
 	{
 		TestInput input = context.getInput();
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		TestServerContext server = spContext.getServer();
 		
 		// Disable anisotropic filtering
@@ -133,7 +133,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		context.takeScreenshot("options_screen");
 		
 		LOGGER.info("Clicking Controls button");
-		for(int i = 0; i < 6; i++)
+		for(int i = 0; i < 5; i++)
 			input.pressKey(GLFW.GLFW_KEY_TAB);
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		context.takeScreenshot("controls_screen");
@@ -146,13 +146,13 @@ public final class WiFreecamTest implements FabricClientGameTest
 			pressKeyWithModifiers(context, GLFW.GLFW_KEY_TAB,
 				GLFW.GLFW_MOD_SHIFT);
 		assertScreenshotEquals(context, "freecam_keybind_default",
-			"https://i.imgur.com/291TsOi.png");
+			"https://i.imgur.com/1IoeCSz.png");
 		
 		LOGGER.info("Changing switch control keybind to B");
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		input.pressKey(GLFW.GLFW_KEY_B);
 		assertScreenshotEquals(context, "switch_control_keybind_changed",
-			"https://i.imgur.com/pDgINGm.png");
+			"https://i.imgur.com/Tl7HhW7.png");
 		
 		LOGGER.info("Closing screens");
 		for(int i = 0; i < 4; i++)
@@ -164,7 +164,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 	{
 		LOGGER.info("Testing Freecam");
 		TestInput input = context.getInput();
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		TestServerContext server = spContext.getServer();
 		
 		// Enable Freecam with default settings

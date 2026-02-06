@@ -44,7 +44,7 @@ public enum TranslationTest
 		String key, String expected)
 	{
 		String actual = context
-			.computeOnClient(mc -> Component.translatable(key).getString());
+			.computeOnClient(_ -> Component.translatable(key).getString());
 		if(expected.equals(actual))
 			return;
 		
@@ -58,7 +58,7 @@ public enum TranslationTest
 		String key, String expected)
 	{
 		String actual =
-			context.computeOnClient(mc -> Component.keybind(key).getString());
+			context.computeOnClient(_ -> Component.keybind(key).getString());
 		if(expected.equals(actual))
 			return;
 		

@@ -286,9 +286,9 @@ public enum WiModsTestHelper
 			KeyboardHandlerAccessor kb =
 				(KeyboardHandlerAccessor)mc.keyboardHandler;
 			long handle = mc.getWindow().handle();
-			kb.invokeOnKey(handle, GLFW.GLFW_PRESS,
+			kb.invokeKeyPress(handle, GLFW.GLFW_PRESS,
 				new KeyEvent(key.getValue(), 0, modifiers));
-			kb.invokeOnKey(handle, GLFW.GLFW_RELEASE,
+			kb.invokeKeyPress(handle, GLFW.GLFW_RELEASE,
 				new KeyEvent(key.getValue(), 0, modifiers));
 		});
 	}
@@ -300,10 +300,10 @@ public enum WiModsTestHelper
 		context.runOnClient(mc -> {
 			MouseHandlerAccessor ms = (MouseHandlerAccessor)mc.mouseHandler;
 			long handle = mc.getWindow().handle();
-			ms.invokeOnMouseButton(handle,
+			ms.invokeOnButton(handle,
 				new MouseButtonInfo(key.getValue(), modifiers),
 				GLFW.GLFW_PRESS);
-			ms.invokeOnMouseButton(handle,
+			ms.invokeOnButton(handle,
 				new MouseButtonInfo(key.getValue(), modifiers),
 				GLFW.GLFW_RELEASE);
 		});

@@ -93,26 +93,26 @@ public final class EditColorScreen extends Screen
 			new EditBox(tr, fieldsX, fieldsY, 92, 20, Component.literal(""));
 		hexValueField.setValue(ColorUtils.toHex(color).substring(1));
 		hexValueField.setMaxLength(6);
-		hexValueField.setResponder(s -> updateColor(true));
+		hexValueField.setResponder(_ -> updateColor(true));
 		
 		// RGB fields
 		redValueField = new EditBox(tr, fieldsX, fieldsY + 35, 50, 20,
 			Component.literal(""));
 		redValueField.setValue("" + color.getRed());
 		redValueField.setMaxLength(3);
-		redValueField.setResponder(s -> updateColor(false));
+		redValueField.setResponder(_ -> updateColor(false));
 		
 		greenValueField = new EditBox(tr, fieldsX + 75, fieldsY + 35, 50, 20,
 			Component.literal(""));
 		greenValueField.setValue("" + color.getGreen());
 		greenValueField.setMaxLength(3);
-		greenValueField.setResponder(s -> updateColor(false));
+		greenValueField.setResponder(_ -> updateColor(false));
 		
 		blueValueField = new EditBox(tr, fieldsX + 150, fieldsY + 35, 50, 20,
 			Component.literal(""));
 		blueValueField.setValue("" + color.getBlue());
 		blueValueField.setMaxLength(3);
-		blueValueField.setResponder(s -> updateColor(false));
+		blueValueField.setResponder(_ -> updateColor(false));
 		
 		addWidget(hexValueField);
 		addWidget(redValueField);
@@ -124,7 +124,7 @@ public final class EditColorScreen extends Screen
 		hexValueField.setCursorPosition(0);
 		hexValueField.setHighlightPos(6);
 		
-		doneButton = Button.builder(Component.literal("Done"), b -> done())
+		doneButton = Button.builder(Component.literal("Done"), _ -> done())
 			.bounds(fieldsX, height - 30, 200, 20).build();
 		addRenderableWidget(doneButton);
 	}

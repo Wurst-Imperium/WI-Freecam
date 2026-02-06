@@ -102,7 +102,7 @@ Pull requests welcome - [add your native language](https://github.com/Wurst-Impe
 ## Development Setup
 
 > [!IMPORTANT]
-> Make sure you have [Java Development Kit 21](https://adoptium.net/temurin/releases?version=21&os=any&arch=any) installed. It won't work with other versions.
+> Make sure you have [Java Development Kit 25](https://adoptium.net/temurin/releases?version=25&os=any&arch=any) installed. It won't work with other versions.
 
 ### Development using Eclipse
 

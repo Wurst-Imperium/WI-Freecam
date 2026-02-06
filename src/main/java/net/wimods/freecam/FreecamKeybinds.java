@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 
@@ -57,7 +57,7 @@ public final class FreecamKeybinds
 		KeyMapping key =
 			new KeyMapping(name, type, keyCode, category, all.size());
 		all.add(key);
-		KeyBindingHelper.registerKeyBinding(key);
+		KeyMappingHelper.registerKeyMapping(key);
 		return key;
 	}
 	

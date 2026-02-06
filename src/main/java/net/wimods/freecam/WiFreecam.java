@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.Command;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -74,18 +74,18 @@ public enum WiFreecam
 		gui = new ClickGui(guiFile);
 		
 		keybinds = new FreecamKeybinds();
-		ClientTickEvents.END_CLIENT_TICK.register(mc -> keybinds.onUpdate());
+		ClientTickEvents.END_CLIENT_TICK.register(_ -> keybinds.onUpdate());
 		
 		translator = new FreecamTranslator();
 		
-		ClientTickEvents.END_CLIENT_TICK.register(mc -> {
+		ClientTickEvents.END_CLIENT_TICK.register(_ -> {
 			if(enabled)
 				onUpdate();
 		});
 		
 		ClientCommandRegistrationCallback.EVENT
-			.register((dispatcher, registryAccess) -> dispatcher.register(
-				ClientCommandManager.literal("freecam").executes(context -> {
+			.register((dispatcher, _) -> dispatcher
+				.register(ClientCommands.literal("freecam").executes(_ -> {
 					MC.schedule(() -> getGui().open());
 					return Command.SINGLE_SUCCESS;
 				})));

@@ -23,7 +23,7 @@ on:
       publish_modrinth:
         description: "Publish to Modrinth"
         type: boolean
-        default: false
+        default: true
       update_website:
         description: "Update wimods.net post (only works if there already is one)"
         type: boolean
@@ -126,21 +126,21 @@ jobs:
       run: ./gradlew github --stacktrace --no-configuration-cache
 
     - name: Publish to CurseForge
-      if: ${{ inputs.publish_curseforge }}
+      if: ${{ false && inputs.publish_curseforge }}
       env:
         CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
       run: ./gradlew publishCurseforge --stacktrace --no-configuration-cache
 
     - name: Get CurseForge file ID
       id: cf_file_id
-      if: ${{ inputs.publish_curseforge }}
+      if: ${{ false && inputs.publish_curseforge }}
       run: |
         file_id=$(./gradlew getCurseforgeId -x publishCurseforge --no-configuration-cache --warning-mode none | grep -o 'CURSEFORGE_FILE_ID=[0-9]*' | grep -o '[0-9]*')
         echo "file_id=$file_id" >> "$GITHUB_OUTPUT"
         echo "CurseForge file ID: \`$file_id\`" >> $GITHUB_STEP_SUMMARY
 
     - name: Publish to Modrinth
-      if: ${{ inputs.publish_modrinth }}
+      if: ${{ false && inputs.publish_modrinth }}
       env:
         MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
       run: ./gradlew publishModrinth --stacktrace --no-configuration-cache

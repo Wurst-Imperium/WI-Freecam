@@ -19,7 +19,7 @@ on:
       publish_modrinth:
         description: "Publish to Modrinth"
         type: boolean
-        default: false
+        default: true
       announce_update:
         description: "Announce as an update on WurstForum"
         type: boolean

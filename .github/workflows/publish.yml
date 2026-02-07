@@ -126,14 +126,14 @@ jobs:
       run: ./gradlew github --stacktrace --no-configuration-cache
 
     - name: Publish to CurseForge
-      if: ${{ false && inputs.publish_curseforge }}
+      if: ${{ inputs.publish_curseforge }}
       env:
         CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
       run: ./gradlew publishCurseforge --stacktrace --no-configuration-cache
 
     - name: Get CurseForge file ID
       id: cf_file_id
-      if: ${{ false && inputs.publish_curseforge }}
+      if: ${{ inputs.publish_curseforge }}
       run: |
         file_id=$(./gradlew getCurseforgeId -x publishCurseforge --no-configuration-cache --warning-mode none | grep -o 'CURSEFORGE_FILE_ID=[0-9]*' | grep -o '[0-9]*')
         echo "file_id=$file_id" >> "$GITHUB_OUTPUT"

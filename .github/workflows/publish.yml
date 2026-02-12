@@ -140,7 +140,7 @@ jobs:
         echo "CurseForge file ID: \`$file_id\`" >> $GITHUB_STEP_SUMMARY
 
     - name: Publish to Modrinth
-      if: ${{ false && inputs.publish_modrinth }}
+      if: ${{ inputs.publish_modrinth }}
       env:
         MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
       run: ./gradlew publishModrinth --stacktrace --no-configuration-cache

@@ -15,6 +15,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.wimods.freecam.WiFreecam;
 
 @Mixin(GameRenderer.class)
@@ -24,13 +25,13 @@ public abstract class GameRendererMixin
 	 * Prevents view bobbing when in Freecam.
 	 */
 	@WrapOperation(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/client/renderer/GameRenderer;bobView(Lcom/mojang/blaze3d/vertex/PoseStack;F)V",
+		target = "Lnet/minecraft/client/renderer/GameRenderer;bobView(Lnet/minecraft/client/renderer/state/CameraRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;)V",
 		ordinal = 0),
 		method = "renderLevel(Lnet/minecraft/client/DeltaTracker;)V")
-	private void onBobView(GameRenderer instance, PoseStack matrices,
-		float tickDelta, Operation<Void> original)
+	private void onBobView(GameRenderer instance, CameraRenderState cameraState,
+		PoseStack matrices, Operation<Void> original)
 	{
 		if(!WiFreecam.INSTANCE.isEnabled())
-			original.call(instance, matrices, tickDelta);
+			original.call(instance, cameraState, matrices);
 	}
 }

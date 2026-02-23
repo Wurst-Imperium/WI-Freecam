@@ -20,9 +20,9 @@ import net.wimods.freecam.WiFreecam;
 public class SectionOcclusionGraphMixin
 {
 	/**
-	 * Turns off the visibility graph when in Freecam, making things like caves
-	 * become visible that would normally be hidden behind other blocks and thus
-	 * skipped for better rendering performance.
+	 * Turns off the visibility graph when in Freecam without Sodium installed,
+	 * making things like caves become visible that would normally be hidden
+	 * behind other blocks and thus skipped for better rendering performance.
 	 */
 	@Redirect(method = "runUpdates",
 		at = @At(value = "INVOKE",

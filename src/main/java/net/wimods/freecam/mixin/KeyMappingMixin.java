@@ -52,9 +52,9 @@ public abstract class KeyMappingMixin implements IKeyMapping
 	 * See https://wurst.wiki/sign_translation_vulnerability
 	 */
 	@WrapOperation(
+		method = "createNameSupplier(Ljava/lang/String;)Ljava/util/function/Supplier;",
 		at = @At(value = "FIELD",
-			target = "Lnet/minecraft/client/KeyMapping;ALL:Ljava/util/Map;"),
-		method = "createNameSupplier(Ljava/lang/String;)Ljava/util/function/Supplier;")
+			target = "Lnet/minecraft/client/KeyMapping;ALL:Ljava/util/Map;"))
 	private static Map<String, KeyMapping> excludeModdedKeyMappingsFromALL(
 		Operation<Map<String, KeyMapping>> original)
 	{

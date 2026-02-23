@@ -21,8 +21,9 @@ import net.wimods.freecam.WiFreecam;
 public abstract class LanguageManagerMixin
 	implements ResourceManagerReloadListener
 {
-	@Inject(at = @At("HEAD"),
-		method = "onResourceManagerReload(Lnet/minecraft/server/packs/resources/ResourceManager;)V")
+	@Inject(
+		method = "onResourceManagerReload(Lnet/minecraft/server/packs/resources/ResourceManager;)V",
+		at = @At("HEAD"))
 	private void onReload(ResourceManager manager, CallbackInfo ci)
 	{
 		// Using a mixin for this because WiFreecam.initialize() runs too

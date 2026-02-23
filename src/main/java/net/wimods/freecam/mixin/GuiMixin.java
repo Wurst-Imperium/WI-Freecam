@@ -25,8 +25,9 @@ public abstract class GuiMixin
 	 * This mixin needs to run after renderScoreboardSidebar()
 	 * and before tabList.setVisible()
 	 */
-	@Inject(at = @At("HEAD"),
-		method = "renderTabList(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V")
+	@Inject(
+		method = "renderTabList(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+		at = @At("HEAD"))
 	private void onRenderTabList(GuiGraphics context, DeltaTracker tickCounter,
 		CallbackInfo ci)
 	{

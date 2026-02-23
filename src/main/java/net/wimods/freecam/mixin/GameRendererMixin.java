@@ -23,10 +23,10 @@ public abstract class GameRendererMixin
 	/**
 	 * Prevents view bobbing when in Freecam.
 	 */
-	@WrapOperation(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/client/renderer/GameRenderer;bobView(Lcom/mojang/blaze3d/vertex/PoseStack;F)V",
-		ordinal = 0),
-		method = "renderLevel(Lnet/minecraft/client/DeltaTracker;)V")
+	@WrapOperation(method = "renderLevel(Lnet/minecraft/client/DeltaTracker;)V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/renderer/GameRenderer;bobView(Lcom/mojang/blaze3d/vertex/PoseStack;F)V",
+			ordinal = 0))
 	private void onBobView(GameRenderer instance, PoseStack matrices,
 		float tickDelta, Operation<Void> original)
 	{

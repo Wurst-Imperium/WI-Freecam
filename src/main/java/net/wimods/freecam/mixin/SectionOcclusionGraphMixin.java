@@ -24,9 +24,9 @@ public class SectionOcclusionGraphMixin
 	 * become visible that would normally be hidden behind other blocks and thus
 	 * skipped for better rendering performance.
 	 */
-	@Redirect(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;facesCanSeeEachother(Lnet/minecraft/core/Direction;Lnet/minecraft/core/Direction;)Z"),
-		method = "runUpdates")
+	@Redirect(method = "runUpdates",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;facesCanSeeEachother(Lnet/minecraft/core/Direction;Lnet/minecraft/core/Direction;)Z"))
 	private boolean onFacesCanSeeEachother(SectionMesh mesh, Direction from,
 		Direction to)
 	{

@@ -30,8 +30,8 @@ public class KeyMappingCategoryMixin
 	 * Translates Freecam's keybind category using Freecam's translator instead
 	 * of Minecraft's, so that it can be displayed correctly.
 	 */
-	@Inject(at = @At("HEAD"),
-		method = "label()Lnet/minecraft/network/chat/Component;",
+	@Inject(method = "label()Lnet/minecraft/network/chat/Component;",
+		at = @At("HEAD"),
 		cancellable = true)
 	private void translateFreecamCategory(CallbackInfoReturnable<Component> cir)
 	{

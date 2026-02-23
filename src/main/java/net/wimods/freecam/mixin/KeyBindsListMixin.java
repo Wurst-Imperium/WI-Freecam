@@ -27,10 +27,11 @@ public class KeyBindsListMixin
 	 * Translates Freecam's keybind names using Freecam's translator instead of
 	 * Minecraft's, so that they can be displayed correctly.
 	 */
-	@WrapOperation(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/network/chat/Component;translatable(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;",
-		ordinal = 0),
-		method = "<init>(Lnet/minecraft/client/gui/screens/options/controls/KeyBindsScreen;Lnet/minecraft/client/Minecraft;)V")
+	@WrapOperation(
+		method = "<init>(Lnet/minecraft/client/gui/screens/options/controls/KeyBindsScreen;Lnet/minecraft/client/Minecraft;)V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/network/chat/Component;translatable(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;",
+			ordinal = 0))
 	private MutableComponent translateFreecamKeybinds(String key,
 		Operation<MutableComponent> original, @Local KeyMapping keyMapping)
 	{

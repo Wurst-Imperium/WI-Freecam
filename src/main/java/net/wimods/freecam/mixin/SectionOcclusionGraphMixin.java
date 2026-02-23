@@ -9,7 +9,9 @@ package net.wimods.freecam.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import net.minecraft.client.renderer.SectionOcclusionGraph;
 import net.minecraft.client.renderer.chunk.SectionMesh;
@@ -24,15 +26,15 @@ public class SectionOcclusionGraphMixin
 	 * making things like caves become visible that would normally be hidden
 	 * behind other blocks and thus skipped for better rendering performance.
 	 */
-	@Redirect(method = "runUpdates",
+	@WrapOperation(method = "runUpdates",
 		at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;facesCanSeeEachother(Lnet/minecraft/core/Direction;Lnet/minecraft/core/Direction;)Z"))
-	private boolean onFacesCanSeeEachother(SectionMesh mesh, Direction from,
-		Direction to)
+	private boolean wrapFacesCanSeeEachother(SectionMesh mesh, Direction from,
+		Direction to, Operation<Boolean> original)
 	{
 		if(WiFreecam.INSTANCE.isEnabled())
 			return true;
 		
-		return mesh.facesCanSeeEachother(from, to);
+		return original.call(mesh, from, to);
 	}
 }

@@ -8,9 +8,10 @@
 package net.wimods.freecam;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
+import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline.Snippet;
-import com.mojang.blaze3d.platform.DepthTestFunction;
+import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -29,7 +30,8 @@ public enum WurstShaderPipelines
 			RenderPipelines.GLOBALS_SNIPPET)
 		.withVertexShader(Identifier.parse("wi_freecam:core/fogless_lines"))
 		.withFragmentShader(Identifier.parse("wi_freecam:core/fogless_lines"))
-		.withBlend(BlendFunction.TRANSLUCENT).withCull(false)
+		.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
+		.withCull(false)
 		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH,
 			Mode.LINES)
 		.buildSnippet();
@@ -41,7 +43,7 @@ public enum WurstShaderPipelines
 		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
 			.withLocation(Identifier
 				.parse("wi_freecam:pipeline/wi_freecam_depth_test_lines"))
-			.build());
+			.withDepthStencilState(DepthStencilState.DEFAULT).build());
 	
 	/**
 	 * Similar to the LINES ShaderPipeline, but with no depth test or fog.
@@ -50,5 +52,5 @@ public enum WurstShaderPipelines
 		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
 			.withLocation(
 				Identifier.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
-			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST).build());
+			.build());
 }

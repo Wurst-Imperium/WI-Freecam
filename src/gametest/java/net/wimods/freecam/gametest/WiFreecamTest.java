@@ -394,8 +394,9 @@ public final class WiFreecamTest implements FabricClientGameTest
 		world.waitForChunksRender();
 		input.holdKeyFor(GLFW.GLFW_KEY_S, 2);
 		input.holdKeyFor(GLFW.GLFW_KEY_SPACE, 1);
+		context.waitTick();
 		assertScreenshotEquals(context, "freecam_moved",
-			"https://i.imgur.com/HxrcHbh.png");
+			"https://i.imgur.com/SQPSG5S.png");
 		
 		// Enable tracer
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);

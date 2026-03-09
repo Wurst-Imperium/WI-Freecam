@@ -44,6 +44,9 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer
 	@Unique
 	private ClientInput realInput;
 	
+	@Unique
+	private int inputSwapDepth;
+	
 	private LocalPlayerMixin(WiFreecam freecam, ClientLevel world,
 		GameProfile profile)
 	{
@@ -57,10 +60,38 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer
 			cir.setReturnValue(false);
 	}
 	
-	@Inject(method = "aiStep()V", at = @At("HEAD"))
-	private void onAiStepHead(CallbackInfo ci)
+	@Inject(method = "tick()V", at = @At("HEAD"))
+	private void onTickHead(CallbackInfo ci)
+	{
+		swapInputIfNeeded();
+	}
+	
+	@Inject(method = "tick()V", at = @At("RETURN"))
+	private void onTickReturn(CallbackInfo ci)
+	{
+		restoreInputIfNeeded();
+	}
+	
+	@Inject(method = "rideTick()V", at = @At("HEAD"))
+	private void onRideTickHead(CallbackInfo ci)
+	{
+		swapInputIfNeeded();
+	}
+	
+	@Inject(method = "rideTick()V", at = @At("RETURN"))
+	private void onRideTickReturn(CallbackInfo ci)
+	{
+		restoreInputIfNeeded();
+	}
+	
+	@Unique
+	private void swapInputIfNeeded()
 	{
 		if(!WiFreecam.INSTANCE.isMovingCamera())
+			return;
+		
+		inputSwapDepth++;
+		if(inputSwapDepth > 1)
 			return;
 		
 		realInput = input;
@@ -68,10 +99,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer
 		input = new ClientInput();
 	}
 	
-	@Inject(method = "aiStep()V", at = @At("RETURN"))
-	private void onAiStepReturn(CallbackInfo ci)
+	@Unique
+	private void restoreInputIfNeeded()
 	{
-		if(realInput == null)
+		if(inputSwapDepth > 0)
+			inputSwapDepth--;
+		
+		if(inputSwapDepth > 0 || realInput == null)
 			return;
 		
 		input = realInput;

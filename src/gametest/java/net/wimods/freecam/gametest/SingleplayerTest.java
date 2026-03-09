@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
+import net.minecraft.world.level.block.Block;
 
 public abstract class SingleplayerTest
 {
@@ -84,6 +85,13 @@ public abstract class SingleplayerTest
 				+ ".png to Imgur. Check the Test Screenshots.zip artifact.");
 		
 		throw new RuntimeException(title + ": " + errorMessage);
+	}
+	
+	protected final void waitForBlock(int relX, int relY, int relZ, Block block)
+	{
+		context.waitFor(mc -> mc.level
+			.getBlockState(mc.player.blockPosition().offset(relX, relY, relZ))
+			.getBlock() == block);
 	}
 	
 	protected final void clearChat()

@@ -13,8 +13,16 @@ import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.wimods.freecam.FreecamInitialPosSetting.InitialPosition;
 import net.wimods.freecam.FreecamInputSetting.ApplyInputTo;
+import net.wimods.freecam.FreecamInteractionSetting.InteractFrom;
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.clickgui.screens.ClickGuiScreen;
 import net.wimods.freecam.clickgui.screens.EditColorScreen;
@@ -47,7 +55,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals("clickgui_screen",
-			"https://i.imgur.com/638mC0V.png");
+			"https://i.imgur.com/5IYDTfS.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		
@@ -74,14 +82,14 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(290, 40);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_pin_button_clicked",
-			"https://i.imgur.com/UE4MdRm.png");
+			"https://i.imgur.com/9o5voFQ.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getGui().getWindows().getFirst().isPinned(),
 			"Pinning Freecam Settings window didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("clickgui_window_pinned",
-			"https://i.imgur.com/rnwzIjX.png");
+			"https://i.imgur.com/rUBheAJ.png");
 		
 		// Unpin Freecam Settings window
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -108,10 +116,10 @@ public final class FreecamTest extends SingleplayerTest
 		// Change speed slider using normal mouse click
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 120);
+		input.setCursorPos(150, 146);
 		input.holdMouseFor(GLFW.GLFW_MOUSE_BUTTON_LEFT, 5);
 		assertScreenshotEquals("dragging_horizontal_speed_slider",
-			"https://i.imgur.com/EcR7Iku.png");
+			"https://i.imgur.com/BTz0DFm.png");
 		assertEquals(
 			WiFreecam.INSTANCE.getSettings().horizontalSpeed.getValue(), 4.7,
 			"Changing horizontal speed slider using normal mouse click didn't work");
@@ -121,7 +129,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Change speed slider using precise input
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 120);
+		input.setCursorPos(150, 146);
 		pressMouseWithModifiers(context, GLFW.GLFW_MOUSE_BUTTON_LEFT,
 			GLFW.GLFW_MOD_CONTROL);
 		context.waitForScreen(EditSliderScreen.class);
@@ -139,7 +147,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Reset horizontal speed slider
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 120);
+		input.setCursorPos(150, 146);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);
 		assertEquals(
 			WiFreecam.INSTANCE.getSettings().horizontalSpeed.getValue(), 1,
@@ -150,10 +158,10 @@ public final class FreecamTest extends SingleplayerTest
 		// Turn off "Scroll to change speed"
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 190);
+		input.setCursorPos(150, 216);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_scroll_to_change_speed_disabled",
-			"https://i.imgur.com/XqzqjIN.png");
+			"https://i.imgur.com/ifGJj3J.png");
 		assertTrue(
 			!WiFreecam.INSTANCE.getSettings().scrollToChangeSpeed.isChecked(),
 			"Turning off \"Scroll to change speed\" didn't work");
@@ -175,7 +183,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Reset "Scroll to change speed" checkbox
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 190);
+		input.setCursorPos(150, 216);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().scrollToChangeSpeed.isChecked(),
@@ -189,14 +197,14 @@ public final class FreecamTest extends SingleplayerTest
 		// Change "Initial position" dropdown to "In front"
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(250, 240);
+		input.setCursorPos(250, 266);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_dropdown_open",
-			"https://i.imgur.com/PScz2kR.png");
-		input.setCursorPos(250, 270);
+			"https://i.imgur.com/pL43rZr.png");
+		input.setCursorPos(250, 296);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_in_front",
-			"https://i.imgur.com/h8XNFLX.png");
+			"https://i.imgur.com/lpHzTv0.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
 				.getSelected() == InitialPosition.IN_FRONT,
@@ -217,13 +225,13 @@ public final class FreecamTest extends SingleplayerTest
 		// Change "Initial position" dropdown to "Above"
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(250, 240);
+		input.setCursorPos(250, 266);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		context.takeScreenshot("clickgui_initial_position_dropdown_open_again");
-		input.setCursorPos(250, 290);
+		input.setCursorPos(250, 316);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_above",
-			"https://i.imgur.com/Eibc0HO.png");
+			"https://i.imgur.com/GxM4FOK.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
 				.getSelected() == InitialPosition.ABOVE,
@@ -244,7 +252,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Reset "Initial position" dropdown
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(250, 240);
+		input.setCursorPos(250, 266);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
@@ -265,10 +273,10 @@ public final class FreecamTest extends SingleplayerTest
 		// Enable tracer
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 270);
+		input.setCursorPos(150, 296);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_tracer_enabled",
-			"https://i.imgur.com/8Kh81kn.png");
+			"https://i.imgur.com/XUaNhMI.png");
 		assertTrue(WiFreecam.INSTANCE.getSettings().tracer.isChecked(),
 			"Enabling tracer didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
@@ -279,9 +287,9 @@ public final class FreecamTest extends SingleplayerTest
 		// Change tracer color to cyan
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 320);
+		input.setCursorPos(150, 346);
 		assertScreenshotEquals("clickgui_tracer_color_hovered",
-			"https://i.imgur.com/PnmCGmV.png");
+			"https://i.imgur.com/ZVQ9vUa.png");
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		context.waitForScreen(EditColorScreen.class);
 		assertScreenshotEquals("edit_color_screen",
@@ -293,7 +301,7 @@ public final class FreecamTest extends SingleplayerTest
 			"Changing tracer color to cyan didn't work");
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals("clickgui_tracer_color_changed",
-			"https://i.imgur.com/mQSMZWJ.png");
+			"https://i.imgur.com/afp8BsA.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("freecam_tracer_cyan",
@@ -302,7 +310,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Reset tracer color
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
-		input.setCursorPos(150, 320);
+		input.setCursorPos(150, 346);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().color.getColorI() == 0xFFFFFFFF,
@@ -329,6 +337,9 @@ public final class FreecamTest extends SingleplayerTest
 			context.waitTick();
 		}
 		context.waitTick();
+		// Open and close chat to reset cursor position
+		input.pressKey(GLFW.GLFW_KEY_T);
+		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		assertScreenshotEquals("freecam_player_moved",
 			"https://i.imgur.com/mf6NgQl.png");
 		WiFreecam.INSTANCE.getSettings().applyInputTo
@@ -337,11 +348,134 @@ public final class FreecamTest extends SingleplayerTest
 		context.waitTick();
 		world.waitForChunksRender();
 		
-		// Clean up
+		// Reset player and remove walkway
 		runCommand("fill 0 -58 1 0 -58 2 air");
 		runCommand("tp @s 0 -57 0 0 0");
 		// Restore body rotation - /tp only rotates the head as of 1.21.11
 		context.runOnClient(mc -> mc.player.setYBodyRot(0));
-		context.waitTicks(10); // for hand animation
+		
+		// Test "Interact from" setting
+		runCommand("setblock 0 -56 2 smooth_stone");
+		waitForBlock(0, 1, 2, Blocks.SMOOTH_STONE);
+		runCommand("setblock 0 -56 1 lever[face=wall,facing=north]");
+		runCommand("setblock 0 -56 3 lever[face=wall,facing=south]");
+		waitForBlock(0, 1, 3, Blocks.LEVER);
+		context.waitTick();
+		world.waitForChunksRender();
+		context.takeScreenshot("freecam_interact_setup");
+		
+		// Enable Freecam and fly to a side view
+		WiFreecam.INSTANCE.getSettings().horizontalSpeed.setValue(0.95);
+		input.pressKey(GLFW.GLFW_KEY_U);
+		input.holdKeyFor(GLFW.GLFW_KEY_W, 3);
+		context.waitTick();
+		WiFreecam.INSTANCE.getSettings().horizontalSpeed.setValue(1);
+		for(int i = 0; i < 6; i++)
+		{
+			input.moveCursor(120, 0);
+			context.waitTick();
+		}
+		input.holdKeyFor(GLFW.GLFW_KEY_S, 2);
+		context.waitTick();
+		world.waitForChunksRender();
+		context.takeScreenshot("freecam_interact_side_view");
+		
+		// Right click with "Interact from: Player"
+		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);
+		context.waitTick();
+		assertLeverState(0, -56, 1, true, "near lever, player mode");
+		assertLeverState(0, -56, 3, false, "far lever, player mode");
+		
+		// Right click with "Interact from: Camera"
+		WiFreecam.INSTANCE.getSettings().interactFrom
+			.setSelected(InteractFrom.CAMERA);
+		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);
+		context.waitTick();
+		assertLeverState(0, -56, 3, true, "far lever, camera mode");
+		assertLeverState(0, -56, 1, true, "near lever, camera mode");
+		
+		// Replace levers with chickens
+		runCommand("fill 0 -56 1 0 -56 3 air strict");
+		Chicken nearChicken = spawnChicken(1.5);
+		Chicken farChicken = spawnChicken(3.5);
+		clearParticles();
+		context.waitTick();
+		
+		// Left click with "Interact from: Player"
+		WiFreecam.INSTANCE.getSettings().interactFrom
+			.setSelected(InteractFrom.PLAYER);
+		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		context.waitTick();
+		assertChickenHealth(nearChicken, true, "near chicken, player mode");
+		assertChickenHealth(farChicken, false, "far chicken, player mode");
+		
+		// Left click with "Interact from: Camera"
+		nearChicken.discard();
+		nearChicken = spawnChicken(1.5);
+		context.waitTick();
+		WiFreecam.INSTANCE.getSettings().interactFrom
+			.setSelected(InteractFrom.CAMERA);
+		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		context.waitTick();
+		assertChickenHealth(farChicken, true, "far chicken, camera mode");
+		assertChickenHealth(nearChicken, false, "near chicken, camera mode");
+		
+		// Clean up
+		nearChicken.discard();
+		farChicken.discard();
+		WiFreecam.INSTANCE.getSettings().interactFrom
+			.setSelected(InteractFrom.PLAYER);
+		input.pressKey(GLFW.GLFW_KEY_U);
+		context.waitTicks(3);
+	}
+	
+	private Chicken spawnChicken(double z)
+	{
+		return server.computeOnServer(s -> {
+			Chicken c = EntityType.CHICKEN.create(s.overworld(),
+				EntitySpawnReason.COMMAND);
+			c.setPos(0.5, -56, z);
+			c.setNoAi(true);
+			c.setNoGravity(true);
+			s.overworld().addFreshEntity(c);
+			return c;
+		});
+	}
+	
+	private void assertLeverState(int x, int y, int z, boolean expectedPowered,
+		String description)
+	{
+		BlockState state = server.computeOnServer(
+			s -> s.overworld().getBlockState(new BlockPos(x, y, z)));
+		
+		String errorMessage = null;
+		if(state.getBlock() != Blocks.LEVER)
+			errorMessage = "Expected lever at " + x + ", " + y + ", " + z
+				+ description + ") but found " + state;
+		else if(state.getValue(LeverBlock.POWERED) != expectedPowered)
+			errorMessage = "Lever at " + x + ", " + y + ", " + z + " ("
+				+ description + ") expected powered=" + expectedPowered
+				+ " but was powered=" + !expectedPowered;
+		
+		if(errorMessage == null)
+			return;
+		
+		failWithScreenshot("freecam_block_interaction_failed",
+			"Freecam block interaction test failed", errorMessage);
+	}
+	
+	private void assertChickenHealth(Chicken chicken, boolean expectedDamaged,
+		String description)
+	{
+		float health = chicken.getHealth();
+		boolean isDamaged = health < 4.0f;
+		if(isDamaged == expectedDamaged)
+			return;
+		
+		String errorMessage = "Chicken (" + description + ") expected "
+			+ (expectedDamaged ? "damaged" : "full health") + health;
+		
+		failWithScreenshot("freecam_entity_interaction_failed",
+			"Freecam entity interaction test failed", errorMessage);
 	}
 }

@@ -26,6 +26,9 @@ public final class FreecamSettings
 	
 	public final FreecamInputSetting applyInputTo = new FreecamInputSetting();
 	
+	public final FreecamInteractionSetting interactFrom =
+		new FreecamInteractionSetting();
+	
 	public final SliderSetting horizontalSpeed =
 		new SliderSetting("Horizontal speed",
 			"description.wurst.setting.freecam.horizontal_speed", 1, 0.05, 10,
@@ -67,6 +70,7 @@ public final class FreecamSettings
 	public FreecamSettings()
 	{
 		add(applyInputTo);
+		add(interactFrom);
 		add(horizontalSpeed);
 		add(verticalSpeed);
 		add(scrollToChangeSpeed);

@@ -79,11 +79,6 @@ public enum WiFreecam
 		
 		translator = new FreecamTranslator();
 		
-		ClientTickEvents.END_CLIENT_TICK.register(mc -> {
-			if(enabled)
-				onUpdate();
-		});
-		
 		ClientCommandRegistrationCallback.EVENT
 			.register((dispatcher, registryAccess) -> dispatcher.register(
 				ClientCommandManager.literal("freecam").executes(context -> {
@@ -118,7 +113,7 @@ public enum WiFreecam
 		MC.levelRenderer.allChanged();
 	}
 	
-	private void onUpdate()
+	public void onUpdate()
 	{
 		LocalPlayer player = MC.player;
 		if(player == null)

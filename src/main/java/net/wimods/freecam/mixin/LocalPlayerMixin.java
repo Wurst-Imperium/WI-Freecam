@@ -10,8 +10,6 @@ package net.wimods.freecam.mixin;
 import java.util.function.Predicate;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,7 +22,6 @@ import com.mojang.authlib.GameProfile;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -33,20 +30,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.wimods.freecam.InputFaker;
+import net.wimods.freecam.InputFaker.TempRealInput;
 import net.wimods.freecam.WiFreecam;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer
 {
-	@Shadow
-	public ClientInput input;
-	
-	@Unique
-	private ClientInput realInput;
-	
-	@Unique
-	private int inputSwapDepth;
-	
 	private LocalPlayerMixin(WiFreecam freecam, ClientLevel world,
 		GameProfile profile)
 	{
@@ -63,53 +53,39 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer
 	@Inject(method = "tick()V", at = @At("HEAD"))
 	private void onTickHead(CallbackInfo ci)
 	{
-		swapInputIfNeeded();
+		InputFaker.swapIfNeeded();
+	}
+	
+	@Inject(method = "tick()V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/player/AbstractClientPlayer;tick()V",
+			ordinal = 0))
+	private void onTick(CallbackInfo ci)
+	{
+		WiFreecam freecam = WiFreecam.INSTANCE;
+		try(TempRealInput ignore = new TempRealInput())
+		{
+			if(freecam.isEnabled())
+				freecam.onUpdate();
+		}
 	}
 	
 	@Inject(method = "tick()V", at = @At("RETURN"))
 	private void onTickReturn(CallbackInfo ci)
 	{
-		restoreInputIfNeeded();
+		InputFaker.restoreIfNeeded();
 	}
 	
 	@Inject(method = "rideTick()V", at = @At("HEAD"))
 	private void onRideTickHead(CallbackInfo ci)
 	{
-		swapInputIfNeeded();
+		InputFaker.swapIfNeeded();
 	}
 	
 	@Inject(method = "rideTick()V", at = @At("RETURN"))
 	private void onRideTickReturn(CallbackInfo ci)
 	{
-		restoreInputIfNeeded();
-	}
-	
-	@Unique
-	private void swapInputIfNeeded()
-	{
-		if(!WiFreecam.INSTANCE.isMovingCamera())
-			return;
-		
-		inputSwapDepth++;
-		if(inputSwapDepth > 1)
-			return;
-		
-		realInput = input;
-		input.tick();
-		input = new ClientInput();
-	}
-	
-	@Unique
-	private void restoreInputIfNeeded()
-	{
-		if(inputSwapDepth > 0)
-			inputSwapDepth--;
-		
-		if(inputSwapDepth > 0 || realInput == null)
-			return;
-		
-		input = realInput;
-		realInput = null;
+		InputFaker.restoreIfNeeded();
 	}
 	
 	@Override

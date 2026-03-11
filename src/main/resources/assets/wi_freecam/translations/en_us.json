@@ -16,6 +16,7 @@
   "description.wurst.setting.freecam.tracer": "Draws a line to your character's actual position.",
   "description.wurst.setting.freecam.hide_hand": "Hides your hand and held items while using Freecam.",
   "description.wurst.setting.freecam.disable_on_damage": "Automatically turns off Freecam when you take damage.",
+  "description.wurst.setting.freecam.reload_chunks": "Reloads all chunks when you turn off Freecam.\n\nTurning this off improves performance but can cause issues with visual holes in the world.",
   "description.wurst.setting.freecam.exclude_me_from_statistics": "Excludes you from WI Freecam's anonymous version statistics, which help me decide which old versions are still worth supporting. Opt out if you're paranoid, but know that no personal data is collected anyways.",
   "gui.wurst.generic.ctrl_left_click_for_precise_input": "§e[ctrl]§r+§e[left-click]§r for precise input",
   "gui.wurst.generic.left_click_to_edit": "§e[left-click]§r to edit",

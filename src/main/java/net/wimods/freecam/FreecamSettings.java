@@ -63,6 +63,10 @@ public final class FreecamSettings
 		new CheckboxSetting("Disable on damage",
 			"description.wurst.setting.freecam.disable_on_damage", true);
 	
+	public final CheckboxSetting reloadChunks =
+		new CheckboxSetting("Reload chunks",
+			"description.wurst.setting.freecam.reload_chunks", true);
+	
 	public final CheckboxSetting excludeFromStats = new CheckboxSetting(
 		"Exclude me from statistics",
 		"description.wurst.setting.freecam.exclude_me_from_statistics", false);
@@ -80,6 +84,7 @@ public final class FreecamSettings
 		add(color);
 		add(hideHand);
 		add(disableOnDamage);
+		add(reloadChunks);
 		add(excludeFromStats);
 	}
 	

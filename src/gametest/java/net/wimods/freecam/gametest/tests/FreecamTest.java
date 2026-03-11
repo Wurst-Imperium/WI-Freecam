@@ -55,7 +55,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals("clickgui_screen",
-			"https://i.imgur.com/5IYDTfS.png");
+			"https://i.imgur.com/rcdRH5Y.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		
@@ -82,14 +82,14 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(290, 40);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_pin_button_clicked",
-			"https://i.imgur.com/9o5voFQ.png");
+			"https://i.imgur.com/08anClQ.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getGui().getWindows().getFirst().isPinned(),
 			"Pinning Freecam Settings window didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("clickgui_window_pinned",
-			"https://i.imgur.com/rUBheAJ.png");
+			"https://i.imgur.com/zLrcTts.png");
 		
 		// Unpin Freecam Settings window
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -119,7 +119,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(150, 146);
 		input.holdMouseFor(GLFW.GLFW_MOUSE_BUTTON_LEFT, 5);
 		assertScreenshotEquals("dragging_horizontal_speed_slider",
-			"https://i.imgur.com/BTz0DFm.png");
+			"https://i.imgur.com/tbRrEBD.png");
 		assertEquals(
 			WiFreecam.INSTANCE.getSettings().horizontalSpeed.getValue(), 4.7,
 			"Changing horizontal speed slider using normal mouse click didn't work");
@@ -161,7 +161,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(150, 216);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_scroll_to_change_speed_disabled",
-			"https://i.imgur.com/ifGJj3J.png");
+			"https://i.imgur.com/EWgRwoi.png");
 		assertTrue(
 			!WiFreecam.INSTANCE.getSettings().scrollToChangeSpeed.isChecked(),
 			"Turning off \"Scroll to change speed\" didn't work");
@@ -200,11 +200,11 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(250, 266);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_dropdown_open",
-			"https://i.imgur.com/pL43rZr.png");
+			"https://i.imgur.com/Lc6gkLw.png");
 		input.setCursorPos(250, 296);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_in_front",
-			"https://i.imgur.com/lpHzTv0.png");
+			"https://i.imgur.com/hjSGgNS.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
 				.getSelected() == InitialPosition.IN_FRONT,
@@ -231,7 +231,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(250, 316);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_above",
-			"https://i.imgur.com/GxM4FOK.png");
+			"https://i.imgur.com/s45CRIa.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getSettings().initialPos
 				.getSelected() == InitialPosition.ABOVE,
@@ -276,7 +276,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(150, 296);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_tracer_enabled",
-			"https://i.imgur.com/XUaNhMI.png");
+			"https://i.imgur.com/YmqoXis.png");
 		assertTrue(WiFreecam.INSTANCE.getSettings().tracer.isChecked(),
 			"Enabling tracer didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
@@ -289,7 +289,7 @@ public final class FreecamTest extends SingleplayerTest
 		context.waitForScreen(ClickGuiScreen.class);
 		input.setCursorPos(150, 346);
 		assertScreenshotEquals("clickgui_tracer_color_hovered",
-			"https://i.imgur.com/ZVQ9vUa.png");
+			"https://i.imgur.com/8gPCt3G.png");
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		context.waitForScreen(EditColorScreen.class);
 		assertScreenshotEquals("edit_color_screen",
@@ -301,7 +301,7 @@ public final class FreecamTest extends SingleplayerTest
 			"Changing tracer color to cyan didn't work");
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals("clickgui_tracer_color_changed",
-			"https://i.imgur.com/afp8BsA.png");
+			"https://i.imgur.com/5FRIZFm.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("freecam_tracer_cyan",

@@ -110,7 +110,8 @@ public enum WiFreecam
 	
 	private void onDisable()
 	{
-		MC.levelRenderer.allChanged();
+		if(settings.reloadChunks.isChecked())
+			MC.levelRenderer.allChanged();
 	}
 	
 	public void onUpdate()

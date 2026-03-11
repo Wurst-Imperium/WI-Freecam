@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.wimods.freecam.FreecamHud;
 import net.wimods.freecam.WiFreecam;
 
@@ -26,9 +26,9 @@ public abstract class GuiMixin
 	 * and before tabList.setVisible()
 	 */
 	@Inject(at = @At("HEAD"),
-		method = "renderTabList(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V")
-	private void onRenderTabList(GuiGraphics context, DeltaTracker tickCounter,
-		CallbackInfo ci)
+		method = "extractTabList(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V")
+	private void onExtractTabList(GuiGraphicsExtractor context,
+		DeltaTracker tickCounter, CallbackInfo ci)
 	{
 		if(WiFreecam.MC.debugEntries.isOverlayVisible())
 			return;

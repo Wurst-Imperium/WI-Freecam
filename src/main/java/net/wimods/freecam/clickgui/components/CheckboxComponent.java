@@ -10,7 +10,7 @@ package net.wimods.freecam.clickgui.components;
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.clickgui.ClickGui;
@@ -51,7 +51,7 @@ public final class CheckboxComponent extends Component
 	}
 	
 	@Override
-	public void render(GuiGraphics context, int mouseX, int mouseY,
+	public void render(GuiGraphicsExtractor context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		int x1 = getX();
@@ -82,7 +82,7 @@ public final class CheckboxComponent extends Component
 		
 		// text
 		String name = setting.getName();
-		context.drawString(TR, name, x3 + 2, y1 + 2, GUI.getTxtColor(), false);
+		context.text(TR, name, x3 + 2, y1 + 2, GUI.getTxtColor(), false);
 	}
 	
 	private int getFillColor(boolean hovering)

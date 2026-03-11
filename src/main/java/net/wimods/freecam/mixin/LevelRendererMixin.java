@@ -7,7 +7,7 @@
  */
 package net.wimods.freecam.mixin;
 
-import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,10 +28,10 @@ import net.wimods.freecam.WiFreecam;
 public class LevelRendererMixin
 {
 	@Inject(at = @At("RETURN"),
-		method = "renderLevel(Lcom/mojang/blaze3d/resource/GraphicsResourceAllocator;Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/renderer/state/level/CameraRenderState;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Vector4f;ZLnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;)V")
+		method = "renderLevel(Lcom/mojang/blaze3d/resource/GraphicsResourceAllocator;Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/renderer/state/level/CameraRenderState;Lorg/joml/Matrix4fc;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Vector4f;ZLnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;)V")
 	private void onRender(GraphicsResourceAllocator allocator,
 		DeltaTracker tickCounter, boolean renderBlockOutline,
-		CameraRenderState cameraState, Matrix4f positionMatrix,
+		CameraRenderState cameraState, Matrix4fc positionMatrix,
 		GpuBufferSlice gpuBufferSlice, Vector4f vector4f,
 		boolean shouldRenderSky, ChunkSectionsToRender chunkSectionsToRender,
 		CallbackInfo ci)

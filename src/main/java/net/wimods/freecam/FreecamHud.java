@@ -10,7 +10,7 @@ package net.wimods.freecam;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.CommonColors;
 import net.wimods.freecam.clickgui.screens.ClickGuiScreen;
 
@@ -18,7 +18,8 @@ public final class FreecamHud
 {
 	private static final ArrayList<WiFreecam> activeHax = new ArrayList<>();
 	
-	public static void onRenderGui(GuiGraphics context, float partialTicks)
+	public static void onRenderGui(GuiGraphicsExtractor context,
+		float partialTicks)
 	{
 		WiFreecam freecam = WiFreecam.INSTANCE;
 		
@@ -30,7 +31,8 @@ public final class FreecamHud
 			freecam.getGui().renderPinnedWindows(context, partialTicks);
 	}
 	
-	private static void drawHackList(GuiGraphics context, float partialTicks)
+	private static void drawHackList(GuiGraphicsExtractor context,
+		float partialTicks)
 	{
 		Font font = WiFreecam.MC.font;
 		int posX = 2;
@@ -38,10 +40,10 @@ public final class FreecamHud
 		
 		for(WiFreecam hack : activeHax)
 		{
-			context.drawString(font, hack.getRenderName(), posX + 1, posY + 1,
+			context.text(font, hack.getRenderName(), posX + 1, posY + 1,
 				CommonColors.BLACK, false);
 			context.guiRenderState.up();
-			context.drawString(font, hack.getRenderName(), posX, posY,
+			context.text(font, hack.getRenderName(), posX, posY,
 				CommonColors.WHITE, false);
 			
 			posY += 9;

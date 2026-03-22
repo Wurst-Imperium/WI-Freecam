@@ -21,16 +21,16 @@ import net.wimods.freecam.WiFreecam;
 @Mixin(MouseHandler.class)
 public abstract class MouseHandlerMixin
 {
-	@Inject(at = @At("RETURN"), method = "onScroll(JDD)V")
+	@Inject(method = "onScroll(JDD)V", at = @At("RETURN"))
 	private void onOnScroll(long window, double horizontal, double vertical,
 		CallbackInfo ci)
 	{
 		WiFreecam.INSTANCE.onMouseScroll(vertical);
 	}
 	
-	@WrapWithCondition(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V"),
-		method = "onScroll(JDD)V")
+	@WrapWithCondition(method = "onScroll(JDD)V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V"))
 	private boolean wrapOnScroll(Inventory inventory, int slot)
 	{
 		return !WiFreecam.INSTANCE.isControllingScrollEvents();

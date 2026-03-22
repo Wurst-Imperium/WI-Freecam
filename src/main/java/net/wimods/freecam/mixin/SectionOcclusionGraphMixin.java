@@ -9,7 +9,9 @@ package net.wimods.freecam.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import net.minecraft.client.renderer.SectionOcclusionGraph;
 import net.minecraft.client.renderer.chunk.SectionMesh;
@@ -20,19 +22,19 @@ import net.wimods.freecam.WiFreecam;
 public class SectionOcclusionGraphMixin
 {
 	/**
-	 * Turns off the visibility graph when in Freecam, making things like caves
-	 * become visible that would normally be hidden behind other blocks and thus
-	 * skipped for better rendering performance.
+	 * Turns off the visibility graph when in Freecam without Sodium installed,
+	 * making things like caves become visible that would normally be hidden
+	 * behind other blocks and thus skipped for better rendering performance.
 	 */
-	@Redirect(at = @At(value = "INVOKE",
-		target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;facesCanSeeEachother(Lnet/minecraft/core/Direction;Lnet/minecraft/core/Direction;)Z"),
-		method = "runUpdates")
-	private boolean onFacesCanSeeEachother(SectionMesh mesh, Direction from,
-		Direction to)
+	@WrapOperation(method = "runUpdates",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;facesCanSeeEachother(Lnet/minecraft/core/Direction;Lnet/minecraft/core/Direction;)Z"))
+	private boolean wrapFacesCanSeeEachother(SectionMesh mesh, Direction from,
+		Direction to, Operation<Boolean> original)
 	{
 		if(WiFreecam.INSTANCE.isEnabled())
 			return true;
 		
-		return mesh.facesCanSeeEachother(from, to);
+		return original.call(mesh, from, to);
 	}
 }

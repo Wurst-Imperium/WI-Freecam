@@ -27,8 +27,9 @@ import net.wimods.freecam.WiFreecam;
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin
 {
-	@Inject(at = @At("RETURN"),
-		method = "renderLevel(Lcom/mojang/blaze3d/resource/GraphicsResourceAllocator;Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/renderer/state/level/CameraRenderState;Lorg/joml/Matrix4fc;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Vector4f;ZLnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;)V")
+	@Inject(
+		method = "renderLevel(Lcom/mojang/blaze3d/resource/GraphicsResourceAllocator;Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/renderer/state/level/CameraRenderState;Lorg/joml/Matrix4fc;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Vector4f;ZLnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;)V",
+		at = @At("RETURN"))
 	private void onRender(GraphicsResourceAllocator allocator,
 		DeltaTracker tickCounter, boolean renderBlockOutline,
 		CameraRenderState cameraState, Matrix4fc positionMatrix,

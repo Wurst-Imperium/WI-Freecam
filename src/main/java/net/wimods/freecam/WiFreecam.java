@@ -28,6 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.wimods.freecam.FreecamInputSetting.ApplyInputTo;
+import net.wimods.freecam.FreecamInteractionSetting.InteractFrom;
 import net.wimods.freecam.clickgui.ClickGui;
 import net.wimods.freecam.mixinterface.IKeyMapping;
 import net.wimods.freecam.settings.SettingsFile;
@@ -78,11 +79,6 @@ public enum WiFreecam
 		
 		translator = new FreecamTranslator();
 		
-		ClientTickEvents.END_CLIENT_TICK.register(_ -> {
-			if(enabled)
-				onUpdate();
-		});
-		
 		ClientCommandRegistrationCallback.EVENT
 			.register((dispatcher, _) -> dispatcher
 				.register(ClientCommands.literal("freecam").executes(_ -> {
@@ -114,10 +110,11 @@ public enum WiFreecam
 	
 	private void onDisable()
 	{
-		MC.levelRenderer.allChanged();
+		if(settings.reloadChunks.isChecked())
+			MC.levelRenderer.allChanged();
 	}
 	
-	private void onUpdate()
+	public void onUpdate()
 	{
 		LocalPlayer player = MC.player;
 		if(player == null)
@@ -189,6 +186,12 @@ public enum WiFreecam
 			&& settings.applyInputTo.getSelected() == ApplyInputTo.CAMERA;
 	}
 	
+	public boolean isClickingFromCamera()
+	{
+		return enabled
+			&& settings.interactFrom.getSelected() == InteractFrom.CAMERA;
+	}
+	
 	public void onRender(PoseStack matrixStack, float partialTicks)
 	{
 		if(!settings.tracer.isChecked())
@@ -215,6 +218,11 @@ public enum WiFreecam
 	public Vec3 getCamPos(float partialTicks)
 	{
 		return Mth.lerp(partialTicks, prevCamPos, camPos);
+	}
+	
+	public Vec3 getScaledCamDir(double scale)
+	{
+		return Vec3.directionFromRotation(camPitch, camYaw).scale(scale);
 	}
 	
 	public void turn(double deltaYaw, double deltaPitch)

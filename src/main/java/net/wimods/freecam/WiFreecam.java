@@ -132,7 +132,7 @@ public enum WiFreecam
 		}
 		lastHealth = currentHealth;
 		
-		if(!isMovingCamera() || MC.screen != null)
+		if(!isMovingCamera() || MC.gui.screen() != null)
 		{
 			prevCamPos = camPos;
 			return;
@@ -177,7 +177,7 @@ public enum WiFreecam
 	public boolean isControllingScrollEvents()
 	{
 		return isMovingCamera() && settings.scrollToChangeSpeed.isChecked()
-			&& MC.screen == null;
+			&& MC.gui.screen() == null;
 	}
 	
 	public boolean isMovingCamera()

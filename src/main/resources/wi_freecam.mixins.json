@@ -5,7 +5,7 @@
   "client": [
     "CameraMixin",
     "GameRendererMixin",
-    "GuiMixin",
+    "HudMixin",
     "ItemInHandRendererMixin",
     "KeyBindsListMixin",
     "KeyMappingCategoryMixin",

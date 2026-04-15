@@ -111,7 +111,7 @@ public enum WiFreecam
 	private void onDisable()
 	{
 		if(settings.reloadChunks.isChecked())
-			MC.levelRenderer.allChanged();
+			MC.levelExtractor.allChanged();
 	}
 	
 	public void onUpdate()
@@ -142,7 +142,7 @@ public enum WiFreecam
 		Vec2 moveVector = player.input.getMoveVector();
 		
 		// Convert to world coordinates
-		double yawRad = MC.gameRenderer.getMainCamera().yRot() * Mth.DEG_TO_RAD;
+		double yawRad = MC.gameRenderer.mainCamera().yRot() * Mth.DEG_TO_RAD;
 		double sinYaw = Mth.sin(yawRad);
 		double cosYaw = Mth.cos(yawRad);
 		double offsetX = moveVector.x * cosYaw - moveVector.y * sinYaw;

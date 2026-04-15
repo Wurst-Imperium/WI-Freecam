@@ -38,7 +38,7 @@ public enum RenderUtils
 	
 	public static Vec3 getCameraPos()
 	{
-		Camera camera = WiFreecam.MC.gameRenderer.getMainCamera();
+		Camera camera = WiFreecam.MC.gameRenderer.mainCamera();
 		if(camera == null)
 			return Vec3.ZERO;
 		
@@ -47,7 +47,7 @@ public enum RenderUtils
 	
 	public static Rotation getCameraRotation()
 	{
-		Camera camera = WiFreecam.MC.gameRenderer.getMainCamera();
+		Camera camera = WiFreecam.MC.gameRenderer.mainCamera();
 		if(camera == null)
 			return new Rotation(0, 0);
 		
@@ -56,7 +56,7 @@ public enum RenderUtils
 	
 	public static BlockPos getCameraBlockPos()
 	{
-		Camera camera = WiFreecam.MC.gameRenderer.getMainCamera();
+		Camera camera = WiFreecam.MC.gameRenderer.mainCamera();
 		if(camera == null)
 			return BlockPos.ZERO;
 		
@@ -65,7 +65,7 @@ public enum RenderUtils
 	
 	public static MultiBufferSource.BufferSource getVCP()
 	{
-		return WiFreecam.MC.renderBuffers().bufferSource();
+		return WiFreecam.MC.gameRenderer.renderBuffers().bufferSource();
 	}
 	
 	public static int toIntColor(float[] rgb, float opacity)
@@ -86,7 +86,7 @@ public enum RenderUtils
 		Vec3 offset = getCameraPos().reverse();
 		drawLine(matrices, buffer, start.add(offset), end.add(offset), color);
 		
-		vcp.endBatch(layer);
+		vcp.uploadAndDraw();
 	}
 	
 	private static Vec3 getTracerOrigin(float partialTicks)
@@ -105,7 +105,7 @@ public enum RenderUtils
 		Vec3 offset = getCameraPos().reverse();
 		drawLine(matrices, buffer, start, end.add(offset), color);
 		
-		vcp.endBatch(layer);
+		vcp.uploadAndDraw();
 	}
 	
 	public static void drawLine(PoseStack matrices, VertexConsumer buffer,
@@ -165,7 +165,7 @@ public enum RenderUtils
 		drawOutlinedBox(matrices, buffer, box.move(getCameraPos().reverse()),
 			color);
 		
-		vcp.endBatch(layer);
+		vcp.uploadAndDraw();
 	}
 	
 	public static void drawOutlinedBox(VertexConsumer buffer, AABB box,

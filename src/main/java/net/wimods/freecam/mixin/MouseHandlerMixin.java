@@ -30,7 +30,7 @@ public abstract class MouseHandlerMixin
 	
 	@WrapWithCondition(method = "onScroll(JDD)V",
 		at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V"))
+			target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlotDeferred(I)V"))
 	private boolean wrapOnScroll(Inventory inventory, int slot)
 	{
 		return !WiFreecam.INSTANCE.isControllingScrollEvents();

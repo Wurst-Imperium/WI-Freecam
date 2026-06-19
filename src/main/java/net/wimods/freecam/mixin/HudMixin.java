@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.wimods.freecam.FreecamHud;
 import net.wimods.freecam.WiFreecam;
 
-@Mixin(Gui.class)
-public abstract class GuiMixin
+@Mixin(Hud.class)
+public abstract class HudMixin
 {
 	/*
 	 * This mixin needs to run after renderScoreboardSidebar()

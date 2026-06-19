@@ -17,7 +17,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -38,7 +37,7 @@ public enum RenderUtils
 	
 	public static Vec3 getCameraPos()
 	{
-		Camera camera = WiFreecam.MC.gameRenderer.getMainCamera();
+		Camera camera = WiFreecam.MC.gameRenderer.mainCamera();
 		if(camera == null)
 			return Vec3.ZERO;
 		
@@ -47,7 +46,7 @@ public enum RenderUtils
 	
 	public static Rotation getCameraRotation()
 	{
-		Camera camera = WiFreecam.MC.gameRenderer.getMainCamera();
+		Camera camera = WiFreecam.MC.gameRenderer.mainCamera();
 		if(camera == null)
 			return new Rotation(0, 0);
 		
@@ -56,16 +55,11 @@ public enum RenderUtils
 	
 	public static BlockPos getCameraBlockPos()
 	{
-		Camera camera = WiFreecam.MC.gameRenderer.getMainCamera();
+		Camera camera = WiFreecam.MC.gameRenderer.mainCamera();
 		if(camera == null)
 			return BlockPos.ZERO;
 		
 		return camera.blockPosition();
-	}
-	
-	public static MultiBufferSource.BufferSource getVCP()
-	{
-		return WiFreecam.MC.renderBuffers().bufferSource();
 	}
 	
 	public static int toIntColor(float[] rgb, float opacity)
@@ -79,14 +73,14 @@ public enum RenderUtils
 	public static void drawLine(PoseStack matrices, Vec3 start, Vec3 end,
 		int color, boolean depthTest)
 	{
-		MultiBufferSource.BufferSource vcp = getVCP();
+		WiModsBufferSource bs = new WiModsBufferSource();
 		RenderType layer = WurstRenderLayers.getLines(depthTest);
-		VertexConsumer buffer = vcp.getBuffer(layer);
+		VertexConsumer buffer = bs.getBuffer(layer);
 		
 		Vec3 offset = getCameraPos().reverse();
 		drawLine(matrices, buffer, start.add(offset), end.add(offset), color);
 		
-		vcp.endBatch(layer);
+		bs.uploadAndDraw();
 	}
 	
 	private static Vec3 getTracerOrigin(float partialTicks)
@@ -97,15 +91,15 @@ public enum RenderUtils
 	public static void drawTracer(PoseStack matrices, float partialTicks,
 		Vec3 end, int color, boolean depthTest)
 	{
-		MultiBufferSource.BufferSource vcp = getVCP();
+		WiModsBufferSource bs = new WiModsBufferSource();
 		RenderType layer = WurstRenderLayers.getLines(depthTest);
-		VertexConsumer buffer = vcp.getBuffer(layer);
+		VertexConsumer buffer = bs.getBuffer(layer);
 		
 		Vec3 start = getTracerOrigin(partialTicks);
 		Vec3 offset = getCameraPos().reverse();
 		drawLine(matrices, buffer, start, end.add(offset), color);
 		
-		vcp.endBatch(layer);
+		bs.uploadAndDraw();
 	}
 	
 	public static void drawLine(PoseStack matrices, VertexConsumer buffer,
@@ -158,14 +152,14 @@ public enum RenderUtils
 	public static void drawOutlinedBox(PoseStack matrices, AABB box, int color,
 		boolean depthTest)
 	{
-		MultiBufferSource.BufferSource vcp = getVCP();
+		WiModsBufferSource bs = new WiModsBufferSource();
 		RenderType layer = WurstRenderLayers.getLines(depthTest);
-		VertexConsumer buffer = vcp.getBuffer(layer);
+		VertexConsumer buffer = bs.getBuffer(layer);
 		
 		drawOutlinedBox(matrices, buffer, box.move(getCameraPos().reverse()),
 			color);
 		
-		vcp.endBatch(layer);
+		bs.uploadAndDraw();
 	}
 	
 	public static void drawOutlinedBox(VertexConsumer buffer, AABB box,

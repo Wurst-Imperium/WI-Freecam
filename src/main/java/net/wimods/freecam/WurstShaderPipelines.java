@@ -7,13 +7,15 @@
  */
 package net.wimods.freecam;
 
+import java.util.Optional;
+
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
+import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline.Snippet;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -26,15 +28,14 @@ public enum WurstShaderPipelines
 	 * Similar to the RENDERTYPE_LINES Snippet, but without fog.
 	 */
 	public static final Snippet FOGLESS_LINES_SNIPPET = RenderPipeline
-		.builder(RenderPipelines.MATRICES_FOG_SNIPPET,
-			RenderPipelines.GLOBALS_SNIPPET)
+		.builder(RenderPipelines.LINES_SNIPPET)
 		.withVertexShader(Identifier.parse("wi_freecam:core/fogless_lines"))
 		.withFragmentShader(Identifier.parse("wi_freecam:core/fogless_lines"))
 		.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
 		.withCull(false)
-		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH,
-			Mode.LINES)
-		.buildSnippet();
+		.withVertexBinding(0,
+			DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH)
+		.withPrimitiveTopology(PrimitiveTopology.LINES).buildSnippet();
 	
 	/**
 	 * Similar to the LINES ShaderPipeline, but with no fog.
@@ -52,5 +53,5 @@ public enum WurstShaderPipelines
 		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
 			.withLocation(
 				Identifier.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
-			.build());
+			.withDepthStencilState(Optional.empty()).build());
 }

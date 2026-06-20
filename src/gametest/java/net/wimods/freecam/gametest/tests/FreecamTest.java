@@ -13,6 +13,7 @@ import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
@@ -28,6 +29,7 @@ import net.wimods.freecam.clickgui.screens.ClickGuiScreen;
 import net.wimods.freecam.clickgui.screens.EditColorScreen;
 import net.wimods.freecam.clickgui.screens.EditSliderScreen;
 import net.wimods.freecam.gametest.SingleplayerTest;
+import net.wimods.freecam.gametest.WiFreecamTest;
 
 public final class FreecamTest extends SingleplayerTest
 {
@@ -323,8 +325,14 @@ public final class FreecamTest extends SingleplayerTest
 		WiFreecam.INSTANCE.getSettings().tracer.setChecked(false);
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(false);
 		context.waitTick();
-		assertScreenshotEquals("freecam_with_hand",
-			"https://i.imgur.com/6tahHsE.png");
+		// This is broken in Sodium 0.9.0, see
+		// https://github.com/CaffeineMC/sodium/issues/3745
+		// Remove this special case once that issue is fixed.
+		if(!WiFreecamTest.IS_SODIUM_INSTALLED
+			|| !FabricLoader.getInstance().getModContainer("sodium").get()
+				.getMetadata().getVersion().toString().equals("0.9.0+mc26.2"))
+			assertScreenshotEquals("freecam_with_hand",
+				"https://i.imgur.com/6tahHsE.png");
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(true);
 		
 		// Enable player movement, walk forward, and turn around
@@ -361,7 +369,7 @@ public final class FreecamTest extends SingleplayerTest
 		runCommand("setblock 0 -56 1 lever[face=wall,facing=north]");
 		runCommand("setblock 0 -56 3 lever[face=wall,facing=south]");
 		waitForBlock(0, 1, 3, Blocks.LEVER);
-		context.waitTick();
+		context.waitTicks(WiFreecamTest.IS_SODIUM_INSTALLED ? 5 : 1);
 		world.waitForChunksRender();
 		context.takeScreenshot("freecam_interact_setup");
 		

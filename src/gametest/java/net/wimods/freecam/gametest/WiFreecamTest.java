@@ -24,6 +24,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder;
 import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.world.level.block.Blocks;
@@ -38,6 +39,9 @@ public final class WiFreecamTest implements FabricClientGameTest
 {
 	public static final Logger LOGGER =
 		LoggerFactory.getLogger("WI Freecam Test");
+	
+	public static final boolean IS_SODIUM_INSTALLED =
+		FabricLoader.getInstance().isModLoaded("sodium");
 	
 	@Override
 	public void runTest(ClientGameTestContext context)

@@ -34,6 +34,7 @@ import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
 import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.gametest.tests.FreecamTest;
+import net.wimods.freecam.gametest.tests.OcclusionCullingTest;
 
 public final class WiFreecamTest implements FabricClientGameTest
 {
@@ -121,6 +122,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		
 		new FreecamTest(context, spContext).run();
 		TranslationTest.testKeybindTranslationSafety(context);
+		new OcclusionCullingTest(context, spContext).run();
 		
 		LOGGER.info("Opening game menu");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);

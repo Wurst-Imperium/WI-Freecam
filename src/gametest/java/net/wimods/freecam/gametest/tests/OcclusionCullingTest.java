@@ -45,13 +45,13 @@ public final class OcclusionCullingTest extends SingleplayerTest
 			"Occlusion culling did not hide the test chest");
 		
 		// Test that the chest becomes visible with Freecam
-		WiFreecam.INSTANCE.setEnabled(true);
+		context.runOnClient(_ -> WiFreecam.INSTANCE.setEnabled(true));
 		context.runOnClient(mc -> mc.options.fov().set(70));
 		assertChestVisibility(true,
 			"Occlusion culling was not disabled in Freecam");
 		
 		// Clean up
-		WiFreecam.INSTANCE.setEnabled(false);
+		context.runOnClient(_ -> WiFreecam.INSTANCE.setEnabled(false));
 		setBlockAndWait(200, -56, 248, Blocks.AIR);
 		fillSurroundingSections(Blocks.AIR);
 		teleportPlayer(0, -57, 0);
@@ -78,6 +78,9 @@ public final class OcclusionCullingTest extends SingleplayerTest
 	{
 		BlockPos chestPos = new BlockPos(200, -56, 248);
 		waitFor(mc -> {
+			// This is based on the simplified render loop in
+			// ClientGameTestContextImpl.doTakeScreenshot().
+			// Just calling extract() alone can leave the game in a bad state.
 			mc.gameRenderer.extract(DeltaTracker.ONE, true);
 			boolean actual = mc.gameRenderer
 				.gameRenderState().levelRenderState.blockEntityRenderStates

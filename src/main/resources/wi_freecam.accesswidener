@@ -1,3 +1,4 @@
 accessWidener	v1	named
 accessible	field	net/minecraft/client/gui/screens/Screen	renderables	Ljava/util/List;
 accessible	field	net/minecraft/client/gui/screens/TitleScreen	fading	Z
+accessible	method	net/minecraft/client/renderer/LevelRenderer	extractVisibleBlockEntities	(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/state/LevelRenderState;)V

@@ -350,7 +350,8 @@ public final class FreecamTest extends SingleplayerTest
 		input.pressKey(GLFW.GLFW_KEY_T);
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		// Freeze the player's idle arm bob for a deterministic screenshot.
-		int playerTickCount = context.computeOnClient(mc -> mc.player.tickCount);
+		int playerTickCount =
+			context.computeOnClient(mc -> mc.player.tickCount);
 		context.runOnClient(mc -> mc.player.tickCount = 0);
 		assertScreenshotEquals("freecam_player_moved",
 			"https://i.imgur.com/7LBoiaq.png");

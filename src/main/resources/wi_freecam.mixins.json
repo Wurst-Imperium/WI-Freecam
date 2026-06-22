@@ -15,7 +15,7 @@
     "LocalPlayerMixin",
     "MouseHandlerMixin",
     "SectionOcclusionGraphMixin",
-    "sodium.OcclusionCullerMixin"
+    "sodium.RenderSectionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

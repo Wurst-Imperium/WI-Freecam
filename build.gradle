@@ -6,8 +6,8 @@ buildscript {
 
 plugins {
 	id "net.fabricmc.fabric-loom" version "${loom_version}"
-	id "me.modmuss50.mod-publish-plugin" version "2.0.0"
-	id "com.diffplug.spotless" version "8.6.0"
+	id "me.modmuss50.mod-publish-plugin" version "2.0.1"
+	id "com.diffplug.spotless" version "8.7.0"
 	id "net.wimods.github-compile-summary" version "0.1.1"
 }
 
@@ -27,6 +27,17 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven {url = "https://maven.terraformersmc.com/releases/"}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 dependencies {
@@ -56,7 +67,76 @@ loom {
 		clientGameTest {
 			jvmArguments.add("-Dfabric.client.gametest.disableNetworkSynchronizer=true")
 		}
+		
+		clientWithMods {
+			inherit client
+		}
+		
+		clientGameTestWithMods {
+			inherit client
+			source = sourceSets.gametest
+			runDir = "build/run/clientGameTestWithMods"
+			jvmArguments.add("-Dfabric.client.gametest")
+			jvmArguments.add("-Dfabric.client.gametest.disableNetworkSynchronizer=true")
+			programArguments.add("--username=Wurst-Bot")
+		}
 	}
+}
+
+configurations {
+	testMods {
+		transitive = false
+	}
+}
+
+def optionalCompatMods = [
+	sodium: [artifact: "sodium", property: "sodium_version"]
+]
+
+def compatModVersions = optionalCompatMods.collectEntries { id, mod ->
+	[(id): providers.gradleProperty(mod.property).orElse("")]
+}
+
+dependencies {
+	optionalCompatMods.each { id, mod ->
+		def version = compatModVersions[id].get().trim()
+		if(!version.isEmpty())
+			testMods "maven.modrinth:${mod.artifact}:${version}"
+	}
+}
+
+def hasCompatMods = providers.provider {
+	compatModVersions.values().any { !it.get().trim().isEmpty() }
+}
+
+def cleanClientWithMods = tasks.register("cleanClientWithMods", Delete) {
+	delete "run/mods"
+}
+
+def prepareClientWithMods = tasks.register("prepareClientWithMods", Sync) {
+	from configurations.testMods
+	into "run/mods"
+}
+
+tasks.named("runClientWithMods") {
+	onlyIf { hasCompatMods.get() }
+	dependsOn prepareClientWithMods
+	finalizedBy cleanClientWithMods
+}
+
+def cleanClientGameTestWithMods = tasks.register("cleanClientGameTestWithMods", Delete) {
+	delete layout.buildDirectory.dir("run/clientGameTestWithMods")
+}
+
+def prepareClientGameTestWithMods = tasks.register("prepareClientGameTestWithMods", Sync) {
+	dependsOn cleanClientGameTestWithMods
+	from configurations.testMods
+	into layout.buildDirectory.dir("run/clientGameTestWithMods/mods")
+}
+
+tasks.named("runClientGameTestWithMods") {
+	onlyIf { hasCompatMods.get() }
+	dependsOn prepareClientGameTestWithMods
 }
 
 processResources {

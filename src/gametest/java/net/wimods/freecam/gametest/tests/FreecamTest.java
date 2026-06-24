@@ -13,7 +13,6 @@ import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
@@ -325,14 +324,8 @@ public final class FreecamTest extends SingleplayerTest
 		WiFreecam.INSTANCE.getSettings().tracer.setChecked(false);
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(false);
 		context.waitTick();
-		// This is broken in Sodium 0.9.0, see
-		// https://github.com/CaffeineMC/sodium/issues/3745
-		// Remove this special case once that issue is fixed.
-		if(!WiFreecamTest.IS_SODIUM_INSTALLED
-			|| !FabricLoader.getInstance().getModContainer("sodium").get()
-				.getMetadata().getVersion().toString().equals("0.9.0+mc26.2"))
-			assertScreenshotEquals("freecam_with_hand",
-				"https://i.imgur.com/6tahHsE.png");
+		assertScreenshotEquals("freecam_with_hand",
+			"https://i.imgur.com/6tahHsE.png");
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(true);
 		
 		// Enable player movement, walk forward, and turn around

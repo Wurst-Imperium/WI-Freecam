@@ -48,8 +48,10 @@ public final class FreecamTest extends SingleplayerTest
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
 		world.waitForChunksRender();
+		// Player lighting is broken in 26.3-snapshot-2.
+		// Revert to 26.3-snapshot-1 templates once fixed.
 		assertScreenshotEquals("freecam_start_inside",
-			"https://i.imgur.com/jdSno3u.png");
+			"https://i.imgur.com/fiFl0Nz.png");
 		
 		// Open ClickGUI with /freecam
 		input.pressKey(GLFW.GLFW_KEY_T);
@@ -57,7 +59,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals("clickgui_screen",
-			"https://i.imgur.com/l3pngr3.png");
+			"https://i.imgur.com/xWU4cJK.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		
@@ -67,7 +69,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(270, 40);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_minimize_button_clicked",
-			"https://i.imgur.com/WGL2qoq.png");
+			"https://i.imgur.com/Yda91ey.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getGui().getWindows().getFirst().isMinimized(),
 			"Minimizing Freecam Settings window didn't work");
@@ -84,14 +86,14 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(290, 40);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_pin_button_clicked",
-			"https://i.imgur.com/gn0PucL.png");
+			"https://i.imgur.com/s3XlKTa.png");
 		assertTrue(
 			WiFreecam.INSTANCE.getGui().getWindows().getFirst().isPinned(),
 			"Pinning Freecam Settings window didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("clickgui_window_pinned",
-			"https://i.imgur.com/QskEVvr.png");
+			"https://i.imgur.com/EgtIPaA.png");
 		
 		// Unpin Freecam Settings window
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -108,7 +110,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.scroll(1);
 		context.waitTick();
 		assertScreenshotEquals("freecam_speed_scrolled",
-			"https://i.imgur.com/DysLqZw.png");
+			"https://i.imgur.com/Pbq2I1N.png");
 		assertEquals(
 			context.computeOnClient(
 				mc -> mc.player.getInventory().getSelectedSlot()),
@@ -121,7 +123,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(150, 146);
 		input.holdMouseFor(GLFW.GLFW_MOUSE_BUTTON_LEFT, 5);
 		assertScreenshotEquals("dragging_horizontal_speed_slider",
-			"https://i.imgur.com/wG3U4tf.png");
+			"https://i.imgur.com/8E3DDwN.png");
 		assertEquals(
 			WiFreecam.INSTANCE.getSettings().horizontalSpeed.getValue(), 4.7,
 			"Changing horizontal speed slider using normal mouse click didn't work");
@@ -136,7 +138,7 @@ public final class FreecamTest extends SingleplayerTest
 			GLFW.GLFW_MOD_CONTROL);
 		context.waitForScreen(EditSliderScreen.class);
 		assertScreenshotEquals("edit_horizontal_speed_screen",
-			"https://i.imgur.com/F8qpnqX.png");
+			"https://i.imgur.com/X3ukCuv.png");
 		input.typeChars("5");
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		context.waitForScreen(ClickGuiScreen.class);
@@ -163,7 +165,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(150, 216);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_scroll_to_change_speed_disabled",
-			"https://i.imgur.com/jzq35aZ.png");
+			"https://i.imgur.com/u4JRwCb.png");
 		assertTrue(
 			!WiFreecam.INSTANCE.getSettings().scrollToChangeSpeed.isChecked(),
 			"Turning off \"Scroll to change speed\" didn't work");
@@ -174,7 +176,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.scroll(1);
 		context.waitTick();
 		assertScreenshotEquals("freecam_hotbar_scrolled",
-			"https://i.imgur.com/edjDUxr.png");
+			"https://i.imgur.com/1YXetAu.png");
 		assertEquals(
 			context.computeOnClient(
 				mc -> mc.player.getInventory().getSelectedSlot()),
@@ -271,7 +273,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.holdKeyFor(GLFW.GLFW_KEY_SPACE, 1);
 		context.waitTick();
 		assertScreenshotEquals("freecam_moved",
-			"https://i.imgur.com/SQPSG5S.png");
+			"https://i.imgur.com/mCvPopF.png");
 		
 		// Enable tracer
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -279,20 +281,20 @@ public final class FreecamTest extends SingleplayerTest
 		input.setCursorPos(150, 296);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_tracer_enabled",
-			"https://i.imgur.com/McOxW7Z.png");
+			"https://i.imgur.com/TRo8162.png");
 		assertTrue(WiFreecam.INSTANCE.getSettings().tracer.isChecked(),
 			"Enabling tracer didn't work");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("freecam_tracer",
-			"https://i.imgur.com/z3pQumc.png");
+			"https://i.imgur.com/LaGQmcn.png");
 		
 		// Change tracer color to cyan
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
 		context.waitForScreen(ClickGuiScreen.class);
 		input.setCursorPos(150, 346);
 		assertScreenshotEquals("clickgui_tracer_color_hovered",
-			"https://i.imgur.com/0nHH89k.png");
+			"https://i.imgur.com/S1ry6T2.png");
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		context.waitForScreen(EditColorScreen.class);
 		assertScreenshotEquals("edit_color_screen",
@@ -304,11 +306,11 @@ public final class FreecamTest extends SingleplayerTest
 			"Changing tracer color to cyan didn't work");
 		context.waitForScreen(ClickGuiScreen.class);
 		assertScreenshotEquals("clickgui_tracer_color_changed",
-			"https://i.imgur.com/aB7mkEC.png");
+			"https://i.imgur.com/nARryh3.png");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
 		context.waitForScreen(null);
 		assertScreenshotEquals("freecam_tracer_cyan",
-			"https://i.imgur.com/Utkf8ld.png");
+			"https://i.imgur.com/ffZSYmy.png");
 		
 		// Reset tracer color
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -332,7 +334,7 @@ public final class FreecamTest extends SingleplayerTest
 			|| !FabricLoader.getInstance().getModContainer("sodium").get()
 				.getMetadata().getVersion().toString().equals("0.9.0+mc26.2"))
 			assertScreenshotEquals("freecam_with_hand",
-				"https://i.imgur.com/6tahHsE.png");
+				"https://i.imgur.com/5gvHOiD.png");
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(true);
 		
 		// Enable player movement, walk forward, and turn around
@@ -354,7 +356,7 @@ public final class FreecamTest extends SingleplayerTest
 			context.computeOnClient(mc -> mc.player.tickCount);
 		context.runOnClient(mc -> mc.player.tickCount = 0);
 		assertScreenshotEquals("freecam_player_moved",
-			"https://i.imgur.com/7LBoiaq.png");
+			"https://i.imgur.com/21R4ISS.png");
 		context.runOnClient(mc -> mc.player.tickCount = playerTickCount);
 		WiFreecam.INSTANCE.getSettings().applyInputTo
 			.setSelected(ApplyInputTo.CAMERA);

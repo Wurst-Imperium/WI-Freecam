@@ -13,9 +13,7 @@
     "LanguageManagerMixin",
     "LevelRendererMixin",
     "LocalPlayerMixin",
-    "MouseHandlerMixin",
-    "SectionOcclusionGraphMixin",
-    "sodium.RenderSectionManagerMixin"
+    "MouseHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

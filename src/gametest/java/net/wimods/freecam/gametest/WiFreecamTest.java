@@ -55,7 +55,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		waitForTitleScreenFade(context);
 		
 		LOGGER.info("Reached title screen");
-		context.takeScreenshot("title_screen");
+		takeScreenshot(context, "title_screen");
 		
 		// Check config values that aren't visible in screenshots
 		if(!WiFreecam.INSTANCE.getPlausible().isEnabled())
@@ -108,7 +108,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		
 		LOGGER.info("Recording debug menu");
 		input.pressKey(GLFW.GLFW_KEY_F3);
-		context.takeScreenshot("debug_menu");
+		takeScreenshot(context, "debug_menu");
 		input.pressKey(GLFW.GLFW_KEY_F3);
 		
 		LOGGER.info("Checking for broken mixins");
@@ -126,19 +126,19 @@ public final class WiFreecamTest implements FabricClientGameTest
 		
 		LOGGER.info("Opening game menu");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
-		context.takeScreenshot("game_menu");
+		takeScreenshot(context, "game_menu");
 		
 		LOGGER.info("Clicking Options button");
 		for(int i = 0; i < 6; i++)
 			input.pressKey(GLFW.GLFW_KEY_TAB);
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
-		context.takeScreenshot("options_screen");
+		takeScreenshot(context, "options_screen");
 		
 		LOGGER.info("Clicking Controls button");
 		for(int i = 0; i < 5; i++)
 			input.pressKey(GLFW.GLFW_KEY_TAB);
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
-		context.takeScreenshot("controls_screen");
+		takeScreenshot(context, "controls_screen");
 		
 		LOGGER.info("Clicking Key Binds button");
 		input.pressKey(GLFW.GLFW_KEY_TAB);

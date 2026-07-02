@@ -77,6 +77,11 @@ public abstract class SingleplayerTest
 		WiModsTestHelper.waitForScreenshotMatch(context, fileName, templateUrl);
 	}
 	
+	protected final Path takeScreenshot(String fileName)
+	{
+		return WiModsTestHelper.takeScreenshot(context, fileName);
+	}
+	
 	/**
 	 * Takes a screenshot, writes a GitHub Actions summary with the screenshot
 	 * uploaded to Imgur, and throws a {@link RuntimeException} with the given
@@ -85,7 +90,7 @@ public abstract class SingleplayerTest
 	protected final void failWithScreenshot(String fileName, String title,
 		String errorMessage)
 	{
-		Path screenshotPath = context.takeScreenshot(fileName);
+		Path screenshotPath = takeScreenshot(fileName);
 		
 		WiModsTestHelper.ghSummary("### " + title + "\n" + errorMessage + "\n");
 		String url = WiModsTestHelper.tryUploadToImgur(screenshotPath);

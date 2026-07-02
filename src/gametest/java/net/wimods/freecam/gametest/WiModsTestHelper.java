@@ -38,6 +38,7 @@ import net.fabricmc.fabric.impl.client.gametest.screenshot.TestScreenshotCompari
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 import net.fabricmc.fabric.mixin.client.gametest.input.KeyboardHandlerAccessor;
 import net.fabricmc.fabric.mixin.client.gametest.input.MouseHandlerAccessor;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -81,6 +82,17 @@ public enum WiModsTestHelper
 			ClientGameTestContext.DEFAULT_TIMEOUT);
 	}
 	
+	public static Path takeScreenshot(ClientGameTestContext context,
+		String fileName)
+	{
+		ThreadingImpl.checkOnGametestThread("takeScreenshot");
+		// Workaround for https://github.com/FabricMC/fabric-api/issues/5466
+		// Remove once fixed.
+		context
+			.runOnClient(mc -> mc.gameRenderer.update(DeltaTracker.ONE, true));
+		return context.takeScreenshot(fileName);
+	}
+	
 	private static void waitForScreenshotMatchImpl(
 		ClientGameTestContext context, String fileName, String templateUrl,
 		int maxAttempts)
@@ -97,7 +109,7 @@ public enum WiModsTestHelper
 			if(i > 0)
 				context.waitTick();
 			
-			screenshotPath = context.takeScreenshot(fileName);
+			screenshotPath = takeScreenshot(context, fileName);
 			RawImage<int[]> rawScreenshotImage = RawImageImpl
 				.fromColorNativeImage(loadImageFile(screenshotPath));
 			RawImage<int[]> maskedScreenshotImage =

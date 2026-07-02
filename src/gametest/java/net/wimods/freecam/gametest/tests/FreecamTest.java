@@ -229,7 +229,7 @@ public final class FreecamTest extends SingleplayerTest
 		context.waitForScreen(ClickGuiScreen.class);
 		input.setCursorPos(250, 266);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		context.takeScreenshot("clickgui_initial_position_dropdown_open_again");
+		takeScreenshot("clickgui_initial_position_dropdown_open_again");
 		input.setCursorPos(250, 316);
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		assertScreenshotEquals("clickgui_initial_position_above",
@@ -376,7 +376,7 @@ public final class FreecamTest extends SingleplayerTest
 		waitForBlock(0, 1, 3, Blocks.LEVER);
 		context.waitTicks(WiFreecamTest.IS_SODIUM_INSTALLED ? 5 : 1);
 		world.waitForChunksRender();
-		context.takeScreenshot("freecam_interact_setup");
+		takeScreenshot("freecam_interact_setup");
 		
 		// Enable Freecam and fly to a side view
 		WiFreecam.INSTANCE.getSettings().horizontalSpeed.setValue(0.95);
@@ -392,7 +392,7 @@ public final class FreecamTest extends SingleplayerTest
 		input.holdKeyFor(GLFW.GLFW_KEY_S, 2);
 		context.waitTick();
 		world.waitForChunksRender();
-		context.takeScreenshot("freecam_interact_side_view");
+		takeScreenshot("freecam_interact_side_view");
 		
 		// Right click with "Interact from: Camera"
 		input.pressMouse(GLFW.GLFW_MOUSE_BUTTON_RIGHT);

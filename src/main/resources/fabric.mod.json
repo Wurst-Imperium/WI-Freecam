@@ -38,6 +38,9 @@
     "mo_glass": "*",
     "wi_zoom": "*"
   },
+  "conflicts": {
+    "sodium": "<0.9.1-beta.3"
+  },
   "breaks": {
     "wurst": "*"
   },

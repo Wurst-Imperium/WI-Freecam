@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.waypoints.TrackedWaypoint;
 import net.wimods.freecam.WiFreecam;
@@ -39,6 +40,19 @@ public abstract class CameraMixin implements TrackedWaypoint.Camera
 		detached = true;
 		setPosition(freecam.getCamPos(partialTicks));
 		setRotation(freecam.getCamYaw(), freecam.getCamPitch());
+	}
+	
+	/**
+	 * Turns off smart culling when in Freecam, making things like caves
+	 * become visible that would normally be hidden behind other blocks and
+	 * thus skipped for better rendering performance.
+	 */
+	@Inject(method = "extractRenderState", at = @At("RETURN"))
+	private void onExtractRenderState(CameraRenderState cameraState,
+		float cameraEntityPartialTicks, CallbackInfo ci)
+	{
+		if(WiFreecam.INSTANCE.isEnabled())
+			cameraState.smartCull = false;
 	}
 	
 	@Shadow

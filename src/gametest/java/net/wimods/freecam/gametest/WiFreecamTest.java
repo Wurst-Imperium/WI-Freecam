@@ -154,7 +154,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 		input.pressKey(GLFW.GLFW_KEY_ENTER);
 		input.pressKey(GLFW.GLFW_KEY_B);
 		assertScreenshotEquals(context, "switch_control_keybind_changed",
-			"https://i.imgur.com/Tl7HhW7.png");
+			"https://i.imgur.com/xb5wsOb.png");
 		
 		LOGGER.info("Closing screens");
 		for(int i = 0; i < 4; i++)

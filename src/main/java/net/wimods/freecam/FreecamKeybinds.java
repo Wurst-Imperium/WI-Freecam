@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
@@ -28,14 +26,14 @@ public final class FreecamKeybinds
 	private final ArrayList<KeyMapping> all = new ArrayList<>();
 	
 	public final KeyMapping toggleKey =
-		key("key.wi_freecam.toggle", Type.KEYSYM, GLFW.GLFW_KEY_U);
+		key("key.wi_freecam.toggle", Type.KEYBOARD, InputConstants.KEY_U);
 	
 	public final KeyMapping openSettingsKey =
-		key("key.wi_freecam.open_settings", Type.KEYSYM,
-			GLFW.GLFW_KEY_RIGHT_CONTROL);
+		key("key.wi_freecam.open_settings", Type.KEYBOARD,
+			InputConstants.KEY_RCONTROL);
 	
 	public final KeyMapping switchControlKey =
-		key("key.wi_freecam.switch_control", Type.KEYSYM,
+		key("key.wi_freecam.switch_control", Type.KEYBOARD,
 			InputConstants.UNKNOWN.getValue());
 	
 	public void onUpdate()

@@ -7,11 +7,12 @@
  */
 package net.wimods.freecam.gametest;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import static net.wimods.freecam.gametest.WiModsTestHelper.*;
 
 import java.util.List;
 
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.MixinEnvironment;
@@ -107,58 +108,58 @@ public final class WiFreecamTest implements FabricClientGameTest
 			"https://i.imgur.com/i2Nr9is.png");
 		
 		LOGGER.info("Recording debug menu");
-		input.pressKey(GLFW.GLFW_KEY_F3);
+		input.pressKey(InputConstants.KEY_F3);
 		context.takeScreenshot("debug_menu");
-		input.pressKey(GLFW.GLFW_KEY_F3);
+		input.pressKey(InputConstants.KEY_F3);
 		
 		LOGGER.info("Checking for broken mixins");
 		MixinEnvironment.getCurrentEnvironment().audit();
 		
 		LOGGER.info("Opening inventory");
-		input.pressKey(GLFW.GLFW_KEY_E);
+		input.pressKey(InputConstants.KEY_E);
 		assertScreenshotEquals(context, "inventory",
 			"https://i.imgur.com/GP74ZNS.png");
-		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
+		input.pressKey(InputConstants.KEY_ESCAPE);
 		
 		new FreecamTest(context, spContext).run();
 		TranslationTest.testKeybindTranslationSafety(context);
 		new OcclusionCullingTest(context, spContext).run();
 		
 		LOGGER.info("Opening game menu");
-		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
+		input.pressKey(InputConstants.KEY_ESCAPE);
 		context.takeScreenshot("game_menu");
 		
 		LOGGER.info("Clicking Options button");
 		for(int i = 0; i < 7; i++)
-			input.pressKey(GLFW.GLFW_KEY_TAB);
-		input.pressKey(GLFW.GLFW_KEY_ENTER);
+			input.pressKey(InputConstants.KEY_TAB);
+		input.pressKey(InputConstants.KEY_RETURN);
 		context.takeScreenshot("options_screen");
 		
 		LOGGER.info("Clicking Controls button");
 		for(int i = 0; i < 5; i++)
-			input.pressKey(GLFW.GLFW_KEY_TAB);
-		input.pressKey(GLFW.GLFW_KEY_ENTER);
+			input.pressKey(InputConstants.KEY_TAB);
+		input.pressKey(InputConstants.KEY_RETURN);
 		context.takeScreenshot("controls_screen");
 		
 		LOGGER.info("Clicking Key Binds button");
-		input.pressKey(GLFW.GLFW_KEY_TAB);
-		input.pressKey(GLFW.GLFW_KEY_ENTER);
+		input.pressKey(InputConstants.KEY_TAB);
+		input.pressKey(InputConstants.KEY_RETURN);
 		// Select the last keybind in the list
 		for(int i = 0; i < 2; i++)
-			pressKeyWithModifiers(context, GLFW.GLFW_KEY_TAB,
-				GLFW.GLFW_MOD_SHIFT);
+			pressKeyWithModifiers(context, InputConstants.KEY_TAB,
+				InputConstants.MOD_SHIFT);
 		assertScreenshotEquals(context, "freecam_keybind_default",
 			"https://i.imgur.com/1IoeCSz.png");
 		
 		LOGGER.info("Changing switch control keybind to B");
-		input.pressKey(GLFW.GLFW_KEY_ENTER);
-		input.pressKey(GLFW.GLFW_KEY_B);
+		input.pressKey(InputConstants.KEY_RETURN);
+		input.pressKey(InputConstants.KEY_B);
 		assertScreenshotEquals(context, "switch_control_keybind_changed",
 			"https://i.imgur.com/xb5wsOb.png");
 		
 		LOGGER.info("Closing screens");
 		for(int i = 0; i < 4; i++)
-			input.pressKey(GLFW.GLFW_KEY_ESCAPE);
+			input.pressKey(InputConstants.KEY_ESCAPE);
 	}
 	
 	// because the grass texture is randomized and smooth stone isn't

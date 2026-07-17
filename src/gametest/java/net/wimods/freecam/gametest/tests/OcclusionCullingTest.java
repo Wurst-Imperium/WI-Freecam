@@ -86,7 +86,7 @@ public final class OcclusionCullingTest extends SingleplayerTest
 				.gameRenderState().levelRenderState.blockEntityRenderStates
 					.stream()
 					.anyMatch(state -> chestPos.equals(state.blockPos));
-			mc.gameRenderer.render(DeltaTracker.ONE, true);
+			mc.gameRenderer.render();
 			RenderSystem.getDevice().createCommandEncoder().submit();
 			return actual == expected;
 		}, 20, errorMsg);

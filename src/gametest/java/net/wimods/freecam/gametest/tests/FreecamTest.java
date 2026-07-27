@@ -14,6 +14,7 @@ import org.lwjgl.glfw.GLFW;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.chicken.Chicken;
@@ -329,7 +330,8 @@ public final class FreecamTest extends SingleplayerTest
 		WiFreecam.INSTANCE.getSettings().hideHand.setChecked(true);
 		
 		// Enable player movement, walk forward, and turn around
-		runCommand("fill 0 -58 1 0 -58 2 smooth_stone");
+		setBlocksAndWait(
+			blocks -> blocks.fill(0, -58, 1, 0, -58, 2, Blocks.SMOOTH_STONE));
 		WiFreecam.INSTANCE.getSettings().applyInputTo
 			.setSelected(ApplyInputTo.PLAYER);
 		input.holdKeyFor(GLFW.GLFW_KEY_W, 10);
@@ -356,17 +358,20 @@ public final class FreecamTest extends SingleplayerTest
 		world.waitForChunksRender();
 		
 		// Reset player and remove walkway
-		runCommand("fill 0 -58 1 0 -58 2 air");
+		setBlocksAndWait(
+			blocks -> blocks.fill(0, -58, 1, 0, -58, 2, Blocks.AIR));
 		runCommand("tp @s 0 -57 0 0 0");
 		// Restore body rotation - /tp only rotates the head as of 1.21.11
 		context.runOnClient(mc -> mc.player.setYBodyRot(0));
 		
 		// Test "Interact from" setting
-		runCommand("setblock 0 -56 2 smooth_stone");
-		waitForBlock(0, 1, 2, Blocks.SMOOTH_STONE);
-		runCommand("setblock 0 -56 1 lever[face=wall,facing=north]");
-		runCommand("setblock 0 -56 3 lever[face=wall,facing=south]");
-		waitForBlock(0, 1, 3, Blocks.LEVER);
+		setBlocksAndWait(blocks -> {
+			blocks.set(0, -56, 2, Blocks.SMOOTH_STONE);
+			blocks.set(0, -56, 1, Blocks.LEVER.defaultBlockState()
+				.setValue(LeverBlock.FACING, Direction.NORTH));
+			blocks.set(0, -56, 3, Blocks.LEVER.defaultBlockState()
+				.setValue(LeverBlock.FACING, Direction.SOUTH));
+		});
 		context.waitTicks(WiFreecamTest.IS_SODIUM_INSTALLED ? 5 : 1);
 		world.waitForChunksRender();
 		takeScreenshot("freecam_interact_setup");
@@ -402,7 +407,8 @@ public final class FreecamTest extends SingleplayerTest
 		assertLeverState(0, -56, 3, true, "far lever, player mode");
 		
 		// Replace levers with chickens
-		runCommand("fill 0 -56 1 0 -56 3 air strict");
+		setBlocksAndWait(
+			blocks -> blocks.fill(0, -56, 1, 0, -56, 3, Blocks.AIR));
 		Chicken nearChicken = spawnChicken(1.5);
 		Chicken farChicken = spawnChicken(3.5);
 		clearParticles();

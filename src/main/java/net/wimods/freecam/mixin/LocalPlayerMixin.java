@@ -88,19 +88,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer
 		InputFaker.restoreIfNeeded();
 	}
 	
-	@Override
-	public void turn(double deltaYaw, double deltaPitch)
-	{
-		WiFreecam freecam = WiFreecam.INSTANCE;
-		if(freecam.isMovingCamera())
-		{
-			freecam.turn(deltaYaw, deltaPitch);
-			return;
-		}
-		
-		super.turn(deltaYaw, deltaPitch);
-	}
-	
 	@WrapOperation(
 		method = "pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;",
 		at = @At(value = "INVOKE",

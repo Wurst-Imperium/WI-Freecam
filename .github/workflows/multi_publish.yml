@@ -12,6 +12,14 @@ on:
         description: "Space-separated list of branches to publish from"
         type: string
         required: true
+      upload_backups:
+        description: "Upload to backups server"
+        type: boolean
+        default: true
+      publish_github:
+        description: "Publish to GitHub"
+        type: boolean
+        default: true
       publish_curseforge:
         description: "Publish to CurseForge"
         type: boolean
@@ -82,8 +90,8 @@ jobs:
         workflow_inputs: |
           {
             "close_milestone": "true",
-            "upload_backups": "true",
-            "publish_github": "true",
+            "upload_backups": "${{ inputs.upload_backups }}",
+            "publish_github": "${{ inputs.publish_github }}",
             "publish_curseforge": "${{ inputs.publish_curseforge }}",
             "publish_modrinth": "${{ inputs.publish_modrinth }}",
             "update_website": "true"

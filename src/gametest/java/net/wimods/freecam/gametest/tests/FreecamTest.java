@@ -47,7 +47,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Enable Freecam with default settings
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		assertScreenshotEquals("freecam_start_inside",
 			"https://i.imgur.com/jdSno3u.png");
 		
@@ -194,7 +194,7 @@ public final class FreecamTest extends SingleplayerTest
 		context.waitForScreen(null);
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		// Change "Initial position" dropdown to "In front"
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -217,12 +217,12 @@ public final class FreecamTest extends SingleplayerTest
 		// Enable Freecam with initial position in front
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		assertScreenshotEquals("freecam_start_in_front",
 			"https://i.imgur.com/nrMP191.png");
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		// Change "Initial position" dropdown to "Above"
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -244,12 +244,12 @@ public final class FreecamTest extends SingleplayerTest
 		// Enable Freecam with initial position above
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		assertScreenshotEquals("freecam_start_above",
 			"https://i.imgur.com/3LbAtRj.png");
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		// Reset "Initial position" dropdown
 		input.pressKey(GLFW.GLFW_KEY_RIGHT_CONTROL);
@@ -266,7 +266,7 @@ public final class FreecamTest extends SingleplayerTest
 		// Enable Freecam, then fly back and up a bit
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		input.holdKeyFor(GLFW.GLFW_KEY_S, 2);
 		input.holdKeyFor(GLFW.GLFW_KEY_SPACE, 1);
 		context.waitTick();
@@ -355,7 +355,7 @@ public final class FreecamTest extends SingleplayerTest
 			.setSelected(ApplyInputTo.CAMERA);
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		// Reset player and remove walkway
 		setBlocksAndWait(
@@ -373,7 +373,7 @@ public final class FreecamTest extends SingleplayerTest
 				.setValue(LeverBlock.FACING, Direction.SOUTH));
 		});
 		context.waitTicks(WiFreecamTest.IS_SODIUM_INSTALLED ? 5 : 1);
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		context.takeScreenshot("freecam_interact_setup");
 		
 		// Enable Freecam and fly to a side view
@@ -389,7 +389,7 @@ public final class FreecamTest extends SingleplayerTest
 		}
 		input.holdKeyFor(GLFW.GLFW_KEY_S, 2);
 		context.waitTick();
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		context.takeScreenshot("freecam_interact_side_view");
 		
 		// Right click with "Interact from: Camera"

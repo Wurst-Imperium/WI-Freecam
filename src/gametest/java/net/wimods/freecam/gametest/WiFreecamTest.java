@@ -147,13 +147,13 @@ public final class WiFreecamTest implements FabricClientGameTest
 			pressKeyWithModifiers(context, InputConstants.KEY_TAB,
 				InputConstants.MOD_SHIFT);
 		assertScreenshotEquals(context, "freecam_keybind_default",
-			"https://i.imgur.com/1IoeCSz.png");
+			"https://i.imgur.com/C4fIl6h.png");
 		
 		LOGGER.info("Changing switch control keybind to B");
 		input.pressKey(InputConstants.KEY_RETURN);
 		input.pressKey(InputConstants.KEY_B);
 		assertScreenshotEquals(context, "switch_control_keybind_changed",
-			"https://i.imgur.com/xb5wsOb.png");
+			"https://i.imgur.com/JxL6oAf.png");
 		
 		LOGGER.info("Closing screens");
 		for(int i = 0; i < 4; i++)

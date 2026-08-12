@@ -6,7 +6,7 @@
     "CameraMixin",
     "GameRendererMixin",
     "HudMixin",
-    "ItemInHandRendererMixin",
+    "FirstPersonHandsAndItemsRendererMixin",
     "KeyBindsListMixin",
     "KeyMappingCategoryMixin",
     "KeyMappingMixin",

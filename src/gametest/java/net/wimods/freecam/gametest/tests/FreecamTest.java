@@ -303,6 +303,7 @@ public final class FreecamTest extends SingleplayerTest
 			WiFreecam.INSTANCE.getSettings().color.getColorI() == 0xFF00FFFF,
 			"Changing tracer color to cyan didn't work");
 		context.waitForScreen(ClickGuiScreen.class);
+		input.setCursorPos(150, 346);
 		assertScreenshotEquals("clickgui_tracer_color_changed",
 			"https://i.imgur.com/aB7mkEC.png");
 		input.pressKey(InputConstants.KEY_ESCAPE);

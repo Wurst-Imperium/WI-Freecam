@@ -34,6 +34,7 @@ import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
 import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.gametest.tests.FreecamTest;
+import net.wimods.freecam.gametest.tests.ModListPrivacyTest;
 import net.wimods.freecam.gametest.tests.OcclusionCullingTest;
 
 public final class WiFreecamTest implements FabricClientGameTest
@@ -58,6 +59,9 @@ public final class WiFreecamTest implements FabricClientGameTest
 		if(!WiFreecam.INSTANCE.getPlausible().isEnabled())
 			throw new AssertionError("Plausible should be enabled by default");
 		
+		ModListPrivacyTest modListPrivacyTest = new ModListPrivacyTest();
+		modListPrivacyTest.start();
+		
 		LOGGER.info("Creating test world");
 		TestWorldBuilder worldBuilder = context.worldBuilder();
 		worldBuilder.adjustSettings(creator -> {
@@ -75,6 +79,7 @@ public final class WiFreecamTest implements FabricClientGameTest
 			LOGGER.info("Exiting test world");
 		}
 		
+		modListPrivacyTest.finish();
 		LOGGER.info("Test complete");
 	}
 	

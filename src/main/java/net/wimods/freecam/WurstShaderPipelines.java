@@ -7,8 +7,6 @@
  */
 package net.wimods.freecam;
 
-import java.util.Optional;
-
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline.Snippet;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -53,5 +51,5 @@ public enum WurstShaderPipelines
 		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
 			.withLocation(
 				Identifier.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
-			.withDepthStencilState(Optional.empty()).build());
+			.withDepthStencilState(DepthStencilState.OFF).build());
 }

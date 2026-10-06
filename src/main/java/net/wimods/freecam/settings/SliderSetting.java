@@ -10,7 +10,6 @@ package net.wimods.freecam.settings;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.util.Mth;
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.clickgui.Component;
 import net.wimods.freecam.clickgui.components.SliderComponent;
@@ -55,7 +54,7 @@ public class SliderSetting extends Setting
 	
 	public final double getValue()
 	{
-		return Mth.clamp(value, minimum, maximum);
+		return Math.clamp(value, minimum, maximum);
 	}
 	
 	public final float getValueF()
@@ -81,7 +80,7 @@ public class SliderSetting extends Setting
 	public final void setValue(double value)
 	{
 		value = (int)Math.round(value / increment) * increment;
-		value = Mth.clamp(value, minimum, maximum);
+		value = Math.clamp(value, minimum, maximum);
 		
 		this.value = value;
 		WiFreecam.INSTANCE.saveSettings();
@@ -126,8 +125,8 @@ public class SliderSetting extends Setting
 	{
 		float f = (float)(2 * getPercentage());
 		
-		float red = Mth.clamp(f, 0, 1);
-		float green = Mth.clamp(2 - f, 0, 1);
+		float red = Math.clamp(f, 0, 1);
+		float green = Math.clamp(2 - f, 0, 1);
 		float blue = 0;
 		
 		return new float[]{red, green, blue};

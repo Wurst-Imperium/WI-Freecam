@@ -13,7 +13,6 @@ import java.util.Objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.util.Mth;
 import net.wimods.freecam.WiFreecam;
 import net.wimods.freecam.clickgui.Component;
 import net.wimods.freecam.clickgui.components.ColorComponent;
@@ -69,7 +68,7 @@ public final class ColorSetting extends Setting
 	
 	public int getColorI(float alpha)
 	{
-		return getColorI((int)(Mth.clamp(alpha, 0, 1) * 255));
+		return getColorI((int)(Math.clamp(alpha, 0, 1) * 255));
 	}
 	
 	public int getRed()

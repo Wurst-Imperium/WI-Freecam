@@ -10,7 +10,6 @@ package net.wimods.freecam.clickgui;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.util.Mth;
 import net.wimods.freecam.WiFreecam;
 
 public class Window
@@ -69,7 +68,7 @@ public class Window
 	public final int getX()
 	{
 		int scaledWidth = WiFreecam.MC.getWindow().getGuiScaledWidth();
-		return Mth.clamp(x, -width + 1, scaledWidth - 1);
+		return Math.clamp(x, -width + 1, scaledWidth - 1);
 	}
 	
 	/**
@@ -93,7 +92,7 @@ public class Window
 	public final int getY()
 	{
 		int scaledHeight = WiFreecam.MC.getWindow().getGuiScaledHeight();
-		return Mth.clamp(y, -12, scaledHeight - 1);
+		return Math.clamp(y, -12, scaledHeight - 1);
 	}
 	
 	/**

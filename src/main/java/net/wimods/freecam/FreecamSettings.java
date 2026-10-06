@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.minecraft.util.Mth;
 import net.wimods.freecam.settings.CheckboxSetting;
 import net.wimods.freecam.settings.ColorSetting;
 import net.wimods.freecam.settings.Setting;
@@ -99,7 +98,7 @@ public final class FreecamSettings
 	
 	public double getActualVerticalSpeed()
 	{
-		return Mth.clamp(horizontalSpeed.getValue() * verticalSpeed.getValue(),
+		return Math.clamp(horizontalSpeed.getValue() * verticalSpeed.getValue(),
 			0.05, 10);
 	}
 	

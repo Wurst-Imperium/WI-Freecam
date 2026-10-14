@@ -7,7 +7,7 @@
  */
 package net.wimods.freecam.clickgui.components;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -46,7 +46,7 @@ public final class SliderComponent extends Component
 		
 		switch(mouseButton)
 		{
-			case GLFW.GLFW_MOUSE_BUTTON_LEFT:
+			case InputConstants.MOUSE_BUTTON_LEFT:
 			if(hasControlDown)
 				MC.gui
 					.setScreen(new EditSliderScreen(MC.gui.screen(), setting));
@@ -54,7 +54,7 @@ public final class SliderComponent extends Component
 				dragging = true;
 			break;
 			
-			case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
+			case InputConstants.MOUSE_BUTTON_RIGHT:
 			setting.setValue(setting.getDefaultValue());
 			break;
 		}

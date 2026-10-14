@@ -7,7 +7,7 @@
  */
 package net.wimods.freecam.clickgui.components;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -40,11 +40,11 @@ public final class CheckboxComponent extends Component
 	{
 		switch(mouseButton)
 		{
-			case GLFW.GLFW_MOUSE_BUTTON_LEFT:
+			case InputConstants.MOUSE_BUTTON_LEFT:
 			setting.setChecked(!setting.isChecked());
 			break;
 			
-			case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
+			case InputConstants.MOUSE_BUTTON_RIGHT:
 			setting.setChecked(setting.isCheckedByDefault());
 			break;
 		}

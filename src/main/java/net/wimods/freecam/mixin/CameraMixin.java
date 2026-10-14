@@ -49,7 +49,7 @@ public abstract class CameraMixin implements TrackedWaypoint.Camera
 	 */
 	@Inject(method = "extractRenderState", at = @At("RETURN"))
 	private void onExtractRenderState(CameraRenderState cameraState,
-		float cameraEntityPartialTicks, CallbackInfo ci)
+		DeltaTracker deltaTracker, CallbackInfo ci)
 	{
 		if(WiFreecam.INSTANCE.isEnabled())
 			cameraState.smartCull = false;

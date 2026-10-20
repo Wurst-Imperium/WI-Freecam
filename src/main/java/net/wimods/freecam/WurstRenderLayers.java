@@ -19,7 +19,7 @@ public enum WurstRenderLayers
 	 * Similar to {@link RenderType#getLines()}, but with line width 2.
 	 */
 	public static final RenderType LINES = RenderType.create("wi_freecam:lines",
-		RenderSetup.builder(WurstShaderPipelines.DEPTH_TEST_LINES)
+		RenderSetup.nonOitBuilder(WurstShaderPipelines.DEPTH_TEST_LINES)
 			.setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
 			.createRenderSetup());
 	
@@ -29,7 +29,7 @@ public enum WurstRenderLayers
 	 */
 	public static final RenderType ESP_LINES =
 		RenderType.create("wi_freecam:esp_lines",
-			RenderSetup.builder(WurstShaderPipelines.ESP_LINES)
+			RenderSetup.nonOitBuilder(WurstShaderPipelines.ESP_LINES)
 				.setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
 				.createRenderSetup());
 	

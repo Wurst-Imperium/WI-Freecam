@@ -55,13 +55,15 @@ public final class ClickGuiScreen extends Screen
 	}
 	
 	@Override
-	public void extractRenderState(GuiGraphicsExtractor context, int mouseX,
-		int mouseY, float partialTicks)
+	public void extractRenderState(GuiGraphicsExtractor context)
 	{
+		int mouseX = context.mouseX();
+		int mouseY = context.mouseY();
 		for(Renderable drawable : renderables)
-			drawable.extractRenderState(context, mouseX, mouseY, partialTicks);
+			drawable.extractRenderState(context);
 		
-		gui.render(context, mouseX, mouseY, partialTicks);
+		gui.render(context, mouseX, mouseY,
+			context.deltaTracker().getGameTimeDeltaTicks());
 		
 		// Show cursor position during gametests
 		if(System.getProperty("fabric.client.gametest") != null)
@@ -70,8 +72,7 @@ public final class ClickGuiScreen extends Screen
 	}
 	
 	@Override
-	public void extractBackground(GuiGraphicsExtractor context, int mouseX,
-		int mouseY, float deltaTicks)
+	public void extractBackground(GuiGraphicsExtractor context)
 	{
 		// Don't blur
 	}

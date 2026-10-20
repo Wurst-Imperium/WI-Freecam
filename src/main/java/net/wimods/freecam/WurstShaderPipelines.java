@@ -15,7 +15,7 @@ import com.mojang.renderpearl.api.pipeline.ColorTargetState;
 import com.mojang.renderpearl.api.pipeline.DepthStencilState;
 import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.resources.Identifier;
 
 public enum WurstShaderPipelines
@@ -25,8 +25,10 @@ public enum WurstShaderPipelines
 	/**
 	 * Similar to the RENDERTYPE_LINES Snippet, but without fog.
 	 */
-	public static final Snippet FOGLESS_LINES_SNIPPET = RenderPipeline
-		.builder(RenderPipelines.LINES_SNIPPET)
+	public static final Snippet FOGLESS_LINES_SNIPPET = RenderPipeline.builder()
+		.withBindGroupLayout(BindGroupLayouts.GLOBALS)
+		.withBindGroupLayout(BindGroupLayouts.PROJECTION)
+		.withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
 		.withVertexShader(Identifier.parse("wi_freecam:core/fogless_lines"))
 		.withFragmentShader(Identifier.parse("wi_freecam:core/fogless_lines"))
 		.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
@@ -38,18 +40,18 @@ public enum WurstShaderPipelines
 	/**
 	 * Similar to the LINES ShaderPipeline, but with no fog.
 	 */
-	public static final RenderPipeline DEPTH_TEST_LINES =
-		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
-			.withLocation(Identifier
-				.parse("wi_freecam:pipeline/wi_freecam_depth_test_lines"))
-			.withDepthStencilState(DepthStencilState.DEFAULT).build());
+	public static final RenderPipeline DEPTH_TEST_LINES = RenderPipeline
+		.builder(FOGLESS_LINES_SNIPPET)
+		.withLocation(
+			Identifier.parse("wi_freecam:pipeline/wi_freecam_depth_test_lines"))
+		.withDepthStencilState(DepthStencilState.DEFAULT).build();
 	
 	/**
 	 * Similar to the LINES ShaderPipeline, but with no depth test or fog.
 	 */
 	public static final RenderPipeline ESP_LINES =
-		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
+		RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
 			.withLocation(
 				Identifier.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
-			.withDepthStencilState(DepthStencilState.OFF).build());
+			.withDepthStencilState(DepthStencilState.OFF).build();
 }

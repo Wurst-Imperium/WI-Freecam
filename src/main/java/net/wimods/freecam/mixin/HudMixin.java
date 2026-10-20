@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
 import net.wimods.freecam.FreecamHud;
@@ -22,19 +21,20 @@ import net.wimods.freecam.WiFreecam;
 public abstract class HudMixin
 {
 	/*
-	 * This mixin needs to run after renderScoreboardSidebar()
-	 * and before tabList.setVisible()
+	 * Renders WI Freecam's HUD after the scoreboard and before the tab list.
 	 */
 	@Inject(
-		method = "extractTabList(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V",
-		at = @At("HEAD"))
-	private void onExtractTabList(GuiGraphicsExtractor context,
-		DeltaTracker tickCounter, CallbackInfo ci)
+		method = "extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V"))
+	private void onExtractRenderState(GuiGraphicsExtractor context,
+		CallbackInfo ci)
 	{
 		if(WiFreecam.MC.debugEntries.isOverlayVisible())
 			return;
 		
-		float tickDelta = tickCounter.getGameTimeDeltaPartialTick(true);
+		float tickDelta =
+			context.deltaTracker().getGameTimeDeltaPartialTick(true);
 		FreecamHud.onRenderGui(context, tickDelta);
 	}
 }

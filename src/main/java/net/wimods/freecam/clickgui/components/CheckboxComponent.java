@@ -45,7 +45,7 @@ public final class CheckboxComponent extends Component
 			break;
 			
 			case InputConstants.MOUSE_BUTTON_RIGHT:
-			setting.setChecked(setting.isCheckedByDefault());
+			setting.resetToDefault();
 			break;
 		}
 	}

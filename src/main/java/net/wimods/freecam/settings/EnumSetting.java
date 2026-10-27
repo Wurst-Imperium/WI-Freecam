@@ -64,6 +64,12 @@ public class EnumSetting<T extends Enum<T>> extends Setting
 		WiFreecam.INSTANCE.saveSettings();
 	}
 	
+	@Override
+	public void resetToDefault()
+	{
+		setSelected(defaultSelected);
+	}
+	
 	public boolean setSelected(String selected)
 	{
 		for(T value : values)

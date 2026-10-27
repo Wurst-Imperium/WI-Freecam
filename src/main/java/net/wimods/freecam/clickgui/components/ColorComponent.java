@@ -50,7 +50,7 @@ public final class ColorComponent extends Component
 			break;
 			
 			case InputConstants.MOUSE_BUTTON_RIGHT:
-			setting.setColor(setting.getDefaultColor());
+			setting.resetToDefault();
 			break;
 		}
 	}

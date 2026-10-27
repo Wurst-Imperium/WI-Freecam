@@ -3,3 +3,5 @@ accessible	field	net/minecraft/client/gui/screens/Screen	renderables	Ljava/util/
 accessible	field	net/minecraft/client/gui/screens/TitleScreen	fading	Z
 accessible	field	net/minecraft/client/gui/GuiGraphicsExtractor	guiRenderState	Lnet/minecraft/client/renderer/state/gui/GuiRenderState;
 accessible	field	net/minecraft/client/gui/GuiGraphicsExtractor	scissorStack	Lnet/minecraft/client/gui/GuiGraphicsExtractor$ScissorStack;
+accessible	field	net/minecraft/client/player/FirstPersonHandsAndItems	mainHandHeight	F
+accessible	field	net/minecraft/client/player/FirstPersonHandsAndItems	oMainHandHeight	F

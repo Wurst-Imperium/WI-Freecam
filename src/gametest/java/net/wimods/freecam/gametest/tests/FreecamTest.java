@@ -440,7 +440,7 @@ public final class FreecamTest extends SingleplayerTest
 		WiFreecam.INSTANCE.getSettings().interactFrom
 			.setSelected(InteractFrom.CAMERA);
 		input.pressKey(InputConstants.KEY_U);
-		context.waitTicks(3);
+		waitForHandSwing();
 	}
 	
 	private Chicken spawnChicken(double z)

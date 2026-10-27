@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerConnection;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.FirstPersonHandsAndItems;
 import net.wimods.freecam.gametest.BlockTestHelper.BlockBatch;
 
 public abstract class SingleplayerTest
@@ -120,6 +121,21 @@ public abstract class SingleplayerTest
 	protected final void setBlocksAndWait(Consumer<BlockBatch> batchBuilder)
 	{
 		BlockTestHelper.setBlocksAndWait(context, spContext, batchBuilder);
+	}
+	
+	/**
+	 * Waits for the hand swing and equip animations to finish. Call this
+	 * after any action that changes/clears the currently held item, if a
+	 * screenshot is taken soon after (<1 second).
+	 */
+	protected final void waitForHandSwing()
+	{
+		context.waitFor(mc -> {
+			FirstPersonHandsAndItems handsAndItems =
+				mc.player.firstPersonHandsAndItems();
+			return !mc.player.isSwinging() && handsAndItems.mainHandHeight == 1
+				&& handsAndItems.oMainHandHeight == 1;
+		}, 20);
 	}
 	
 	protected final void clearChat()

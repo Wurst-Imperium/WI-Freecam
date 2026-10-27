@@ -49,9 +49,19 @@ public abstract class SingleplayerTest
 	public final void run()
 	{
 		runImpl();
-		waitForScreenshotMatch(
-			getClass().getSimpleName().toLowerCase() + "_cleanup",
-			"https://i.imgur.com/i2Nr9is.png");
+		
+		String testName = getClass().getSimpleName();
+		int retries =
+			waitForScreenshotMatch(testName.toLowerCase() + "_cleanup",
+				"https://i.imgur.com/i2Nr9is.png");
+		
+		if(retries > 0)
+			logger.warn(testName + " needed " + retries
+				+ " retries to get a valid cleanup screenshot. First view ALL"
+				+ " screenshots from " + testName + " to understand what"
+				+ " happened, then optionally retest. If this keeps happening,"
+				+ " your timings are probably wrong. Otherwise it's likely a"
+				+ " fluke, especially if you didn't change any gametest code.");
 	}
 	
 	/**
@@ -71,10 +81,11 @@ public abstract class SingleplayerTest
 		WiModsTestHelper.assertScreenshotEquals(context, fileName, templateUrl);
 	}
 	
-	protected final void waitForScreenshotMatch(String fileName,
+	protected final int waitForScreenshotMatch(String fileName,
 		String templateUrl)
 	{
-		WiModsTestHelper.waitForScreenshotMatch(context, fileName, templateUrl);
+		return WiModsTestHelper.waitForScreenshotMatch(context, fileName,
+			templateUrl);
 	}
 	
 	/**

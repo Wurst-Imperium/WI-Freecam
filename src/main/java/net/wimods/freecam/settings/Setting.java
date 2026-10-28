@@ -56,6 +56,8 @@ public abstract class Setting
 	
 	public abstract Component getComponent();
 	
+	public abstract void resetToDefault();
+	
 	public abstract void fromJson(JsonElement json);
 	
 	public abstract JsonElement toJson();

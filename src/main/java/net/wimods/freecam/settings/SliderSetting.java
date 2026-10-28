@@ -86,6 +86,12 @@ public class SliderSetting extends Setting
 		WiFreecam.INSTANCE.saveSettings();
 	}
 	
+	@Override
+	public final void resetToDefault()
+	{
+		setValue(defaultValue);
+	}
+	
 	public final void increaseValue()
 	{
 		setValue(getValue() + increment);

@@ -53,5 +53,5 @@ public enum WurstShaderPipelines
 		RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
 			.withLocation(
 				Identifier.parse("wi_freecam:pipeline/wi_freecam_esp_lines"))
-			.withDepthStencilState(DepthStencilState.OFF).build();
+			.build();
 }

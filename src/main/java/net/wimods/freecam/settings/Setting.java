@@ -46,7 +46,9 @@ public abstract class Setting
 			.splitLines(getDescription(), width, Style.EMPTY);
 		
 		StringJoiner joiner = new StringJoiner("\n");
-		lines.stream().map(FormattedText::getString)
+		lines.stream()
+			.map(line -> line.getString(
+				net.minecraft.network.chat.Component.STRING_SIZE_LIMIT))
 			.forEach(s -> joiner.add(s));
 		
 		return joiner.toString();

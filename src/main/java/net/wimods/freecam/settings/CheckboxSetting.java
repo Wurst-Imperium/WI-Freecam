@@ -55,6 +55,12 @@ public class CheckboxSetting extends Setting
 	}
 	
 	@Override
+	public final void resetToDefault()
+	{
+		setChecked(checkedByDefault);
+	}
+	
+	@Override
 	public final Component getComponent()
 	{
 		return new CheckboxComponent(this);

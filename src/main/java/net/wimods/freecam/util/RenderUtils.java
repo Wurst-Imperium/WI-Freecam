@@ -70,10 +70,10 @@ public enum RenderUtils
 	
 	public static int toIntColor(float[] rgb, float opacity)
 	{
-		return (int)(Mth.clamp(opacity, 0, 1) * 255) << 24
-			| (int)(Mth.clamp(rgb[0], 0, 1) * 255) << 16
-			| (int)(Mth.clamp(rgb[1], 0, 1) * 255) << 8
-			| (int)(Mth.clamp(rgb[2], 0, 1) * 255);
+		return (int)(Math.clamp(opacity, 0, 1) * 255) << 24
+			| (int)(Math.clamp(rgb[0], 0, 1) * 255) << 16
+			| (int)(Math.clamp(rgb[1], 0, 1) * 255) << 8
+			| (int)(Math.clamp(rgb[2], 0, 1) * 255);
 	}
 	
 	public static void drawLine(PoseStack matrices, Vec3 start, Vec3 end,
@@ -244,8 +244,8 @@ public enum RenderUtils
 	 * Similar to {@link GuiGraphics#fill(int, int, int, int, int)}, but uses
 	 * floating-point coordinates instead of integers.
 	 */
-	public static void fill2D(GuiGraphics context, float x1, float y1, float x2,
-		float y2, int color)
+	public static void fill2D(GuiGraphics graphics, float x1, float y1,
+		float x2, float y2, int color)
 	{
 		int scale = WiFreecam.MC.getWindow().getGuiScale();
 		int xs1 = (int)(x1 * scale);
@@ -253,20 +253,20 @@ public enum RenderUtils
 		int xs2 = (int)(x2 * scale);
 		int ys2 = (int)(y2 * scale);
 		
-		context.pose().pushMatrix();
-		context.pose().scale(1F / scale);
-		context.fill(xs1, ys1, xs2, ys2, color);
-		context.pose().popMatrix();
+		graphics.pose().pushMatrix();
+		graphics.pose().scale(1F / scale);
+		graphics.fill(xs1, ys1, xs2, ys2, color);
+		graphics.pose().popMatrix();
 	}
 	
 	/**
 	 * Renders the given vertices in QUADS draw mode.
 	 */
-	public static void fillQuads2D(GuiGraphics context, float[][] vertices,
+	public static void fillQuads2D(GuiGraphics graphics, float[][] vertices,
 		int color)
 	{
-		Matrix3x2f pose = new Matrix3x2f(context.pose());
-		ScreenRectangle scissor = context.scissorStack.peek();
+		Matrix3x2f pose = new Matrix3x2f(graphics.pose());
+		ScreenRectangle scissor = graphics.scissorStack.peek();
 		
 		for(int i = 0; i < vertices.length - 3; i += 4)
 		{
@@ -282,7 +282,7 @@ public enum RenderUtils
 			float x4 = vertices[i + 3][0];
 			float y4 = vertices[i + 3][1];
 			
-			context.guiRenderState.submitGuiElement(new CustomQuadRenderState(
+			graphics.guiRenderState.submitGuiElement(new CustomQuadRenderState(
 				pose, x1, y1, x2, y2, x3, y3, x4, y4, color, scissor));
 		}
 	}
@@ -294,11 +294,11 @@ public enum RenderUtils
 	 * <p>
 	 * ...blame Vibrant Visuals.
 	 */
-	public static void fillTriangle2D(GuiGraphics context, float[][] vertices,
+	public static void fillTriangle2D(GuiGraphics graphics, float[][] vertices,
 		int color)
 	{
-		Matrix3x2f pose = new Matrix3x2f(context.pose());
-		ScreenRectangle scissor = context.scissorStack.peek();
+		Matrix3x2f pose = new Matrix3x2f(graphics.pose());
+		ScreenRectangle scissor = graphics.scissorStack.peek();
 		
 		for(int i = 0; i < vertices.length - 2; i += 3)
 		{
@@ -312,7 +312,7 @@ public enum RenderUtils
 			float x3 = vertices[i + 2][0];
 			float y3 = vertices[i + 2][1];
 			
-			context.guiRenderState.submitGuiElement(new CustomQuadRenderState(
+			graphics.guiRenderState.submitGuiElement(new CustomQuadRenderState(
 				pose, x1, y1, x2, y2, x3, y3, x3, y3, color, scissor));
 		}
 	}
@@ -323,7 +323,7 @@ public enum RenderUtils
 	 * diagonal lines, uses floating-point coordinates instead of integers, and
 	 * is one actual pixel wide instead of one scaled pixel.
 	 */
-	public static void drawLine2D(GuiGraphics context, float x1, float y1,
+	public static void drawLine2D(GuiGraphics graphics, float x1, float y1,
 		float x2, float y2, int color)
 	{
 		int scale = WiFreecam.MC.getWindow().getGuiScale();
@@ -334,13 +334,13 @@ public enum RenderUtils
 		float angle = (float)Mth.atan2(h, w);
 		int length = Math.round(Mth.sqrt(w * w + h * h));
 		
-		context.pose().pushMatrix();
-		context.pose().scale(1F / scale);
-		context.pose().translate(x, y);
-		context.pose().rotate(angle);
-		context.pose().translate(-0.5F, -0.5F);
-		context.hLine(0, length - 1, 0, color);
-		context.pose().popMatrix();
+		graphics.pose().pushMatrix();
+		graphics.pose().scale(1F / scale);
+		graphics.pose().translate(x, y);
+		graphics.pose().rotate(angle);
+		graphics.pose().translate(-0.5F, -0.5F);
+		graphics.hLine(0, length - 1, 0, color);
+		graphics.pose().popMatrix();
 	}
 	
 	/**
@@ -348,7 +348,7 @@ public enum RenderUtils
 	 * uses floating-point coordinates instead of integers, and is one actual
 	 * pixel wide instead of one scaled pixel.
 	 */
-	public static void drawBorder2D(GuiGraphics context, float x1, float y1,
+	public static void drawBorder2D(GuiGraphics graphics, float x1, float y1,
 		float x2, float y2, int color)
 	{
 		int scale = WiFreecam.MC.getWindow().getGuiScale();
@@ -357,28 +357,28 @@ public enum RenderUtils
 		int w = (int)((x2 - x1) * scale);
 		int h = (int)((y2 - y1) * scale);
 		
-		context.pose().pushMatrix();
-		context.pose().scale(1F / scale);
-		context.hLine(x, x + w - 1, y, color);
-		context.hLine(x, x + w - 1, y + h - 1, color);
-		context.vLine(x, y + 1, y + h - 1, color);
-		context.vLine(x + w - 1, y + 1, y + h - 1, color);
-		context.pose().popMatrix();
+		graphics.pose().pushMatrix();
+		graphics.pose().scale(1F / scale);
+		graphics.hLine(x, x + w - 1, y, color);
+		graphics.hLine(x, x + w - 1, y + h - 1, color);
+		graphics.vLine(x, y + 1, y + h - 1, color);
+		graphics.vLine(x + w - 1, y + 1, y + h - 1, color);
+		graphics.pose().popMatrix();
 	}
 	
 	/**
 	 * Draws a 1px border around the given polygon.
 	 */
-	public static void drawLineStrip2D(GuiGraphics context, float[][] vertices,
+	public static void drawLineStrip2D(GuiGraphics graphics, float[][] vertices,
 		int color)
 	{
 		if(vertices.length < 2)
 			return;
 		
 		for(int i = 1; i < vertices.length; i++)
-			drawLine2D(context, vertices[i - 1][0], vertices[i - 1][1],
+			drawLine2D(graphics, vertices[i - 1][0], vertices[i - 1][1],
 				vertices[i][0], vertices[i][1], color);
-		drawLine2D(context, vertices[vertices.length - 1][0],
+		drawLine2D(graphics, vertices[vertices.length - 1][0],
 			vertices[vertices.length - 1][1], vertices[0][0], vertices[0][1],
 			color);
 	}
@@ -386,14 +386,14 @@ public enum RenderUtils
 	/**
 	 * Draws a box shadow around the given rectangle.
 	 */
-	public static void drawBoxShadow2D(GuiGraphics context, int x1, int y1,
+	public static void drawBoxShadow2D(GuiGraphics graphics, int x1, int y1,
 		int x2, int y2)
 	{
 		float[] acColor = WiFreecam.INSTANCE.getGui().getAcColor();
 		
 		// outline
 		int outlineColor = toIntColor(acColor, 0.5F);
-		drawBorder2D(context, x1, y1, x2, y2, outlineColor);
+		drawBorder2D(graphics, x1, y1, x2, y2, outlineColor);
 		
 		// shadow
 		float xs1 = x1 - 1;
@@ -404,26 +404,26 @@ public enum RenderUtils
 		int shadowColor1 = toIntColor(acColor, 0.75F);
 		int shadowColor2 = 0x00000000;
 		
-		Matrix3x2f pose = new Matrix3x2f(context.pose());
-		ScreenRectangle scissor = context.scissorStack.peek();
+		Matrix3x2f pose = new Matrix3x2f(graphics.pose());
+		ScreenRectangle scissor = graphics.scissorStack.peek();
 		
 		// top
-		context.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
+		graphics.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
 			x1, y1, x2, y1, xs2, ys1, xs1, ys1, shadowColor1, shadowColor1,
 			shadowColor2, shadowColor2, scissor));
 		
 		// left
-		context.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
+		graphics.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
 			xs1, ys1, xs1, ys2, x1, y2, x1, y1, shadowColor2, shadowColor2,
 			shadowColor1, shadowColor1, scissor));
 		
 		// right
-		context.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
+		graphics.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
 			x2, y1, x2, y2, xs2, ys2, xs2, ys1, shadowColor1, shadowColor1,
 			shadowColor2, shadowColor2, scissor));
 		
 		// bottom
-		context.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
+		graphics.guiRenderState.submitGuiElement(new CustomQuadRenderState(pose,
 			x2, y2, x1, y2, xs1, ys2, xs2, ys2, shadowColor1, shadowColor1,
 			shadowColor2, shadowColor2, scissor));
 	}

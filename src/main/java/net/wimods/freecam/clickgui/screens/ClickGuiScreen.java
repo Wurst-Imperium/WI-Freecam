@@ -55,22 +55,22 @@ public final class ClickGuiScreen extends Screen
 	}
 	
 	@Override
-	public void render(GuiGraphics context, int mouseX, int mouseY,
+	public void render(GuiGraphics graphics, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		for(Renderable drawable : renderables)
-			drawable.render(context, mouseX, mouseY, partialTicks);
+			drawable.render(graphics, mouseX, mouseY, partialTicks);
 		
-		gui.render(context, mouseX, mouseY, partialTicks);
+		gui.render(graphics, mouseX, mouseY, partialTicks);
 		
 		// Show cursor position during gametests
 		if(System.getProperty("fabric.client.gametest") != null)
-			RenderUtils.drawBorder2D(context, mouseX - 1, mouseY - 1,
+			RenderUtils.drawBorder2D(graphics, mouseX - 1, mouseY - 1,
 				mouseX + 1, mouseY + 1, 0xFFFF0000);
 	}
 	
 	@Override
-	public void renderBackground(GuiGraphics context, int mouseX, int mouseY,
+	public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY,
 		float deltaTicks)
 	{
 		// Don't blur

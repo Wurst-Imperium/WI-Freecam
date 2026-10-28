@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.wimods.freecam.gametest.BlockTestHelper.BlockBatch;
 
 public abstract class SingleplayerTest
@@ -47,9 +48,19 @@ public abstract class SingleplayerTest
 	public final void run()
 	{
 		runImpl();
-		waitForScreenshotMatch(
-			getClass().getSimpleName().toLowerCase() + "_cleanup",
-			"https://i.imgur.com/i2Nr9is.png");
+		
+		String testName = getClass().getSimpleName();
+		int retries =
+			waitForScreenshotMatch(testName.toLowerCase() + "_cleanup",
+				"https://i.imgur.com/i2Nr9is.png");
+		
+		if(retries > 0)
+			logger.warn(testName + " needed " + retries
+				+ " retries to get a valid cleanup screenshot. First view ALL"
+				+ " screenshots from " + testName + " to understand what"
+				+ " happened, then optionally retest. If this keeps happening,"
+				+ " your timings are probably wrong. Otherwise it's likely a"
+				+ " fluke, especially if you didn't change any gametest code.");
 	}
 	
 	/**
@@ -69,10 +80,11 @@ public abstract class SingleplayerTest
 		WiModsTestHelper.assertScreenshotEquals(context, fileName, templateUrl);
 	}
 	
-	protected final void waitForScreenshotMatch(String fileName,
+	protected final int waitForScreenshotMatch(String fileName,
 		String templateUrl)
 	{
-		WiModsTestHelper.waitForScreenshotMatch(context, fileName, templateUrl);
+		return WiModsTestHelper.waitForScreenshotMatch(context, fileName,
+			templateUrl);
 	}
 	
 	/**
@@ -119,6 +131,21 @@ public abstract class SingleplayerTest
 	protected final void setBlocksAndWait(Consumer<BlockBatch> batchBuilder)
 	{
 		BlockTestHelper.setBlocksAndWait(context, spContext, batchBuilder);
+	}
+	
+	/**
+	 * Waits for the hand swing and equip animations to finish. Call this
+	 * after any action that changes/clears the currently held item, if a
+	 * screenshot is taken soon after (<1 second).
+	 */
+	protected final void waitForHandSwing()
+	{
+		context.waitFor(mc -> {
+			ItemInHandRenderer handsAndItems =
+				mc.gameRenderer.itemInHandRenderer;
+			return !mc.player.swinging && handsAndItems.mainHandHeight == 1
+				&& handsAndItems.oMainHandHeight == 1;
+		}, 20);
 	}
 	
 	protected final void clearChat()

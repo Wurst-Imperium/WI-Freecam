@@ -18,19 +18,19 @@ public final class FreecamHud
 {
 	private static final ArrayList<WiFreecam> activeHax = new ArrayList<>();
 	
-	public static void onRenderGui(GuiGraphics context, float partialTicks)
+	public static void onRenderGui(GuiGraphics graphics, float partialTicks)
 	{
 		WiFreecam freecam = WiFreecam.INSTANCE;
 		
 		if(freecam.getSettings().renderSpeed.isChecked())
-			drawHackList(context, partialTicks);
+			drawHackList(graphics, partialTicks);
 		
 		// pinned windows
 		if(!(WiFreecam.MC.screen instanceof ClickGuiScreen))
-			freecam.getGui().renderPinnedWindows(context, partialTicks);
+			freecam.getGui().renderPinnedWindows(graphics, partialTicks);
 	}
 	
-	private static void drawHackList(GuiGraphics context, float partialTicks)
+	private static void drawHackList(GuiGraphics graphics, float partialTicks)
 	{
 		Font font = WiFreecam.MC.font;
 		int posX = 2;
@@ -38,10 +38,10 @@ public final class FreecamHud
 		
 		for(WiFreecam hack : activeHax)
 		{
-			context.drawString(font, hack.getRenderName(), posX + 1, posY + 1,
+			graphics.drawString(font, hack.getRenderName(), posX + 1, posY + 1,
 				CommonColors.BLACK, false);
-			context.guiRenderState.up();
-			context.drawString(font, hack.getRenderName(), posX, posY,
+			graphics.guiRenderState.up();
+			graphics.drawString(font, hack.getRenderName(), posX, posY,
 				CommonColors.WHITE, false);
 			
 			posY += 9;

@@ -39,7 +39,8 @@ public abstract class CameraMixin implements TrackedWaypoint.Camera
 		
 		detached = true;
 		setPosition(freecam.getCamPos(partialTicks));
-		setRotation(freecam.getCamYaw(), freecam.getCamPitch());
+		if(!WiFreecam.MC.gameRenderer.isPanoramicMode())
+			setRotation(freecam.getCamYaw(), freecam.getCamPitch());
 	}
 	
 	@Shadow

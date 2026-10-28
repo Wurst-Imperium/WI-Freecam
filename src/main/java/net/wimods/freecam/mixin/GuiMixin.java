@@ -28,13 +28,13 @@ public abstract class GuiMixin
 	@Inject(
 		method = "renderTabList(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
 		at = @At("HEAD"))
-	private void onRenderTabList(GuiGraphics context, DeltaTracker tickCounter,
+	private void onRenderTabList(GuiGraphics graphics, DeltaTracker tickCounter,
 		CallbackInfo ci)
 	{
 		if(WiFreecam.MC.debugEntries.isOverlayVisible())
 			return;
 		
 		float tickDelta = tickCounter.getGameTimeDeltaPartialTick(true);
-		FreecamHud.onRenderGui(context, tickDelta);
+		FreecamHud.onRenderGui(graphics, tickDelta);
 	}
 }

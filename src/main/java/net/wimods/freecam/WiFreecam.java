@@ -10,6 +10,7 @@ package net.wimods.freecam;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -98,14 +100,14 @@ public enum WiFreecam
 	
 	private void onEnable()
 	{
+		Entity cameraEntity =
+			Optional.ofNullable(MC.getCameraEntity()).orElse(MC.player);
+		
 		lastHealth = Float.MIN_VALUE;
-		LocalPlayer player = MC.player;
-		float eyeHeight = player.getEyeHeight(player.getPose());
-		Vec3 eyesPos = player.position().add(0, eyeHeight, 0);
-		camPos = eyesPos.add(settings.initialPos.getSelected().getOffset());
+		camPos = settings.initialPos.getSelected().getPos(cameraEntity);
 		prevCamPos = camPos;
-		camYaw = player.getYRot();
-		camPitch = player.getXRot();
+		camYaw = cameraEntity.getViewYRot(1);
+		camPitch = cameraEntity.getViewXRot(1);
 	}
 	
 	private void onDisable()
@@ -230,7 +232,7 @@ public enum WiFreecam
 		// This needs to be consistent with Entity.turn()
 		camYaw += (float)(deltaYaw * 0.15);
 		camPitch += (float)(deltaPitch * 0.15);
-		camPitch = Mth.clamp(camPitch, -90, 90);
+		camPitch = Math.clamp(camPitch, -90, 90);
 	}
 	
 	public float getCamYaw()

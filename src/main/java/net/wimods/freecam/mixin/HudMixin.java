@@ -28,13 +28,13 @@ public abstract class HudMixin
 	@Inject(
 		method = "extractTabList(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V",
 		at = @At("HEAD"))
-	private void onExtractTabList(GuiGraphicsExtractor context,
+	private void onExtractTabList(GuiGraphicsExtractor extractor,
 		DeltaTracker tickCounter, CallbackInfo ci)
 	{
 		if(WiFreecam.MC.debugEntries.isOverlayVisible())
 			return;
 		
 		float tickDelta = tickCounter.getGameTimeDeltaPartialTick(true);
-		FreecamHud.onRenderGui(context, tickDelta);
+		FreecamHud.onRenderGui(extractor, tickDelta);
 	}
 }

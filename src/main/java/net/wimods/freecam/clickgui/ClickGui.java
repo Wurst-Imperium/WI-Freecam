@@ -179,14 +179,12 @@ public final class ClickGui
 			handlePopupMouseClick(mouseX, mouseY, mouseButton);
 		
 		if(!popupClicked)
+		{
 			handleWindowMouseClick(mouseX, mouseY, mouseButton, context);
+			closeInvalidPopups();
+		}
 		
-		for(Popup popup : popups)
-			if(popup.getOwner().getParent().isClosing())
-				popup.close();
-			
 		windows.removeIf(Window::isClosing);
-		popups.removeIf(Popup::isClosing);
 	}
 	
 	public void handleMouseRelease(double mouseX, double mouseY,
@@ -221,26 +219,9 @@ public final class ClickGui
 			scroll = Math.max(scroll,
 				-window.getInnerHeight() + window.getHeight() - 13);
 			window.setScrollOffset(scroll);
+			closeInvalidPopups();
 			break;
 		}
-	}
-	
-	public boolean handleNavigatorPopupClick(double mouseX, double mouseY,
-		int mouseButton)
-	{
-		boolean popupClicked =
-			handlePopupMouseClick(mouseX, mouseY, mouseButton);
-		
-		if(popupClicked)
-		{
-			for(Popup popup : popups)
-				if(popup.getOwner().getParent().isClosing())
-					popup.close();
-				
-			popups.removeIf(Popup::isClosing);
-		}
-		
-		return popupClicked;
 	}
 	
 	public void handleNavigatorMouseClick(double cMouseX, double cMouseY,
@@ -252,16 +233,28 @@ public final class ClickGui
 		handleComponentMouseClick(window, cMouseX, cMouseY, mouseButton,
 			context);
 		
+		closeInvalidPopups();
+	}
+	
+	public void closePopupsOutsideArea(Window window, int x1, int y1, int x2,
+		int y2)
+	{
 		for(Popup popup : popups)
-			if(popup.getOwner().getParent().isClosing())
+		{
+			Component owner = popup.getOwner();
+			if(owner.getParent() == window
+				&& !isComponentVisibleWithinBounds(owner, x1, y1, x2, y2))
 				popup.close();
-			
+		}
+		
 		popups.removeIf(Popup::isClosing);
 	}
 	
-	private boolean handlePopupMouseClick(double mouseX, double mouseY,
+	public boolean handlePopupMouseClick(double mouseX, double mouseY,
 		int mouseButton)
 	{
+		closeInvalidPopups();
+		
 		for(int i = popups.size() - 1; i >= 0; i--)
 		{
 			Popup popup = popups.get(i);
@@ -288,10 +281,49 @@ public final class ClickGui
 			
 			popups.remove(i);
 			popups.add(popup);
+			closeInvalidPopups();
 			return true;
 		}
 		
 		return false;
+	}
+	
+	private void closeInvalidPopups()
+	{
+		for(Popup popup : popups)
+		{
+			Window parent = popup.getOwner().getParent();
+			if(parent == null || parent.isClosing()
+				|| !isPopupOwnerVisible(popup))
+				popup.close();
+		}
+		
+		popups.removeIf(Popup::isClosing);
+	}
+	
+	private boolean isPopupOwnerVisible(Popup popup)
+	{
+		Component owner = popup.getOwner();
+		Window parent = owner.getParent();
+		if(parent == null || parent.isInvisible() || parent.isMinimized())
+			return false;
+		
+		int x1 = parent.getX();
+		int y1 = parent.getY() + 13;
+		int x2 = x1 + parent.getWidth();
+		int y2 = parent.getY() + parent.getHeight();
+		return isComponentVisibleWithinBounds(owner, x1, y1, x2, y2);
+	}
+	
+	private boolean isComponentVisibleWithinBounds(Component c, int x1, int y1,
+		int x2, int y2)
+	{
+		Window parent = c.getParent();
+		int cx1 = parent.getX() + c.getX();
+		int cy1 = parent.getY() + 13 + parent.getScrollOffset() + c.getY();
+		int cx2 = cx1 + c.getWidth();
+		int cy2 = cy1 + c.getHeight();
+		return cx2 > x1 && cx1 < x2 && cy2 > y1 && cy1 < y2;
 	}
 	
 	private void handleWindowMouseClick(int mouseX, int mouseY, int mouseButton,
@@ -434,12 +466,12 @@ public final class ClickGui
 		}
 	}
 	
-	public void render(GuiGraphicsExtractor context, int mouseX, int mouseY,
+	public void render(GuiGraphicsExtractor extractor, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		updateColors();
 		
-		Matrix3x2fStack matrixStack = context.pose();
+		Matrix3x2fStack matrixStack = extractor.pose();
 		matrixStack.pushMatrix();
 		
 		tooltip = "";
@@ -465,20 +497,22 @@ public final class ClickGui
 				else
 					window.stopDraggingScrollbar();
 				
-			context.guiRenderState.up();
-			renderWindow(context, window, mouseX, mouseY, partialTicks);
+			extractor.guiRenderState.up();
+			renderWindow(extractor, window, mouseX, mouseY, partialTicks);
 		}
 		
-		renderPopups(context, mouseX, mouseY);
-		renderTooltip(context, mouseX, mouseY);
+		renderPopups(extractor, mouseX, mouseY);
+		renderTooltip(extractor, mouseX, mouseY);
 		
 		matrixStack.popMatrix();
 	}
 	
-	public void renderPopups(GuiGraphicsExtractor context, int mouseX,
+	public void renderPopups(GuiGraphicsExtractor extractor, int mouseX,
 		int mouseY)
 	{
-		Matrix3x2fStack matrixStack = context.pose();
+		closeInvalidPopups();
+		
+		Matrix3x2fStack matrixStack = extractor.pose();
 		for(Popup popup : popups)
 		{
 			Component owner = popup.getOwner();
@@ -490,17 +524,17 @@ public final class ClickGui
 			
 			matrixStack.pushMatrix();
 			matrixStack.translate(x1, y1);
-			context.guiRenderState.up();
+			extractor.guiRenderState.up();
 			
 			int cMouseX = mouseX - x1;
 			int cMouseY = mouseY - y1;
-			popup.render(context, cMouseX, cMouseY);
+			popup.render(extractor, cMouseX, cMouseY);
 			
 			matrixStack.popMatrix();
 		}
 	}
 	
-	public void renderTooltip(GuiGraphicsExtractor context, int mouseX,
+	public void renderTooltip(GuiGraphicsExtractor extractor, int mouseX,
 		int mouseY)
 	{
 		if(tooltip.isEmpty())
@@ -525,24 +559,24 @@ public final class ClickGui
 		int yt1 = mouseY + th - 2 <= sh ? mouseY - 4 : mouseY - th - 4;
 		int yt2 = yt1 + th + 2;
 		
-		context.guiRenderState.up();
+		extractor.guiRenderState.up();
 		
 		// background
-		context.fill(xt1, yt1, xt2, yt2,
+		extractor.fill(xt1, yt1, xt2, yt2,
 			RenderUtils.toIntColor(bgColor, ttOpacity));
 		
 		// outline
-		RenderUtils.drawBorder2D(context, xt1, yt1, xt2, yt2,
+		RenderUtils.drawBorder2D(extractor, xt1, yt1, xt2, yt2,
 			RenderUtils.toIntColor(acColor, 0.5F));
 		
 		// text
-		context.guiRenderState.up();
+		extractor.guiRenderState.up();
 		for(int i = 0; i < lines.length; i++)
-			context.text(tr, lines[i], xt1 + 2, yt1 + 2 + i * tr.lineHeight,
+			extractor.text(tr, lines[i], xt1 + 2, yt1 + 2 + i * tr.lineHeight,
 				txtColor, false);
 	}
 	
-	public void renderPinnedWindows(GuiGraphicsExtractor context,
+	public void renderPinnedWindows(GuiGraphicsExtractor extractor,
 		float partialTicks)
 	{
 		for(Window window : windows)
@@ -550,9 +584,9 @@ public final class ClickGui
 			if(!window.isPinned() || window.isInvisible())
 				continue;
 			
-			context.guiRenderState.up();
-			renderWindow(context, window, Integer.MIN_VALUE, Integer.MIN_VALUE,
-				partialTicks);
+			extractor.guiRenderState.up();
+			renderWindow(extractor, window, Integer.MIN_VALUE,
+				Integer.MIN_VALUE, partialTicks);
 		}
 	}
 	
@@ -561,7 +595,7 @@ public final class ClickGui
 		
 	}
 	
-	private void renderWindow(GuiGraphicsExtractor context, Window window,
+	private void renderWindow(GuiGraphicsExtractor extractor, Window window,
 		int mouseX, int mouseY, float partialTicks)
 	{
 		int x1 = window.getX();
@@ -573,7 +607,7 @@ public final class ClickGui
 		int windowBgColor = RenderUtils.toIntColor(bgColor, opacity);
 		int outlineColor = RenderUtils.toIntColor(acColor, 0.5F);
 		
-		Matrix3x2fStack matrixStack = context.pose();
+		Matrix3x2fStack matrixStack = extractor.pose();
 		
 		if(window.isMinimized())
 			y2 = y3;
@@ -608,9 +642,9 @@ public final class ClickGui
 				int ys4 = ys3 + (int)scrollbarHeight;
 				
 				// window background
-				context.fill(xs2, ys1, xs3, ys2, windowBgColor);
-				context.fill(xs1, ys1, xs2, ys3, windowBgColor);
-				context.fill(xs1, ys4, xs2, ys2, windowBgColor);
+				extractor.fill(xs2, ys1, xs3, ys2, windowBgColor);
+				extractor.fill(xs1, ys1, xs2, ys3, windowBgColor);
+				extractor.fill(xs1, ys4, xs2, ys2, windowBgColor);
 				
 				boolean hovering = mouseX >= xs1 && mouseY >= ys3
 					&& mouseX < xs2 && mouseY < ys4;
@@ -618,10 +652,10 @@ public final class ClickGui
 				// scrollbar
 				int scrollbarColor = RenderUtils.toIntColor(acColor,
 					hovering ? opacity * 1.5F : opacity);
-				context.fill(xs1, ys3, xs2, ys4, scrollbarColor);
+				extractor.fill(xs1, ys3, xs2, ys4, scrollbarColor);
 				
 				// outline
-				RenderUtils.drawBorder2D(context, xs1, ys3, xs2, ys4,
+				RenderUtils.drawBorder2D(extractor, xs1, ys3, xs2, ys4,
 					outlineColor);
 			}
 			
@@ -632,10 +666,10 @@ public final class ClickGui
 			
 			// window background
 			// left & right
-			context.fill(x1, y3, x3, y2, windowBgColor);
-			context.fill(x5, y3, x4, y2, windowBgColor);
+			extractor.fill(x1, y3, x3, y2, windowBgColor);
+			extractor.fill(x5, y3, x4, y2, windowBgColor);
 			
-			context.enableScissor(x1, y3, x2, y2);
+			extractor.enableScissor(x1, y3, x2, y2);
 			
 			matrixStack.pushMatrix();
 			matrixStack.translate(x1, y4);
@@ -648,7 +682,7 @@ public final class ClickGui
 			{
 				int yc1 = window.getChild(i).getY();
 				int yc2 = yc1 - 2;
-				context.fill(xc1, yc2, xc2, yc1, windowBgColor);
+				extractor.fill(xc1, yc2, xc2, yc1, windowBgColor);
 			}
 			
 			// window background
@@ -663,25 +697,25 @@ public final class ClickGui
 				yc1 = lastChild.getY() + lastChild.getHeight();
 			}
 			int yc2 = yc1 + 2;
-			context.fill(xc1, yc2, xc2, yc1, windowBgColor);
+			extractor.fill(xc1, yc2, xc2, yc1, windowBgColor);
 			
 			// render children
 			int cMouseX = mouseX - x1;
 			int cMouseY = mouseY - y4;
 			for(int i = 0; i < window.countChildren(); i++)
-				window.getChild(i).render(context, cMouseX, cMouseY,
+				window.getChild(i).render(extractor, cMouseX, cMouseY,
 					partialTicks);
 			
 			matrixStack.popMatrix();
-			context.disableScissor();
+			extractor.disableScissor();
 		}
 		
 		// window outline
-		RenderUtils.drawBorder2D(context, x1, y1, x2, y2, outlineColor);
+		RenderUtils.drawBorder2D(extractor, x1, y1, x2, y2, outlineColor);
 		
 		// title bar separator line
 		if(!window.isMinimized())
-			RenderUtils.drawLine2D(context, x1, y3, x2, y3, outlineColor);
+			RenderUtils.drawLine2D(extractor, x1, y3, x2, y3, outlineColor);
 		
 		// title bar buttons
 		int x3 = x2;
@@ -693,8 +727,8 @@ public final class ClickGui
 			x3 -= 11;
 			int x4 = x3 + 9;
 			boolean hovering = hoveringY && mouseX >= x3 && mouseX < x4;
-			renderTitleBarButton(context, x3, y4, x4, y5, hovering);
-			ClickGuiIcons.drawCross(context, x3, y4, x4, y5, hovering);
+			renderTitleBarButton(extractor, x3, y4, x4, y5, hovering);
+			ClickGuiIcons.drawCross(extractor, x3, y4, x4, y5, hovering);
 		}
 		
 		if(window.isPinnable())
@@ -702,8 +736,8 @@ public final class ClickGui
 			x3 -= 11;
 			int x4 = x3 + 9;
 			boolean hovering = hoveringY && mouseX >= x3 && mouseX < x4;
-			renderTitleBarButton(context, x3, y4, x4, y5, hovering);
-			ClickGuiIcons.drawPin(context, x3, y4, x4, y5, hovering,
+			renderTitleBarButton(extractor, x3, y4, x4, y5, hovering);
+			ClickGuiIcons.drawPin(extractor, x3, y4, x4, y5, hovering,
 				window.isPinned());
 		}
 		
@@ -712,31 +746,31 @@ public final class ClickGui
 			x3 -= 11;
 			int x4 = x3 + 9;
 			boolean hovering = hoveringY && mouseX >= x3 && mouseX < x4;
-			renderTitleBarButton(context, x3, y4, x4, y5, hovering);
-			ClickGuiIcons.drawMinimizeArrow(context, x3, y4, x4, y5, hovering,
+			renderTitleBarButton(extractor, x3, y4, x4, y5, hovering);
+			ClickGuiIcons.drawMinimizeArrow(extractor, x3, y4, x4, y5, hovering,
 				window.isMinimized());
 		}
 		
 		// title bar background
 		// above & below buttons
 		int titleBgColor = RenderUtils.toIntColor(acColor, opacity);
-		context.fill(x3, y1, x2, y4, titleBgColor);
-		context.fill(x3, y5, x2, y3, titleBgColor);
+		extractor.fill(x3, y1, x2, y4, titleBgColor);
+		extractor.fill(x3, y5, x2, y3, titleBgColor);
 		
 		// title bar background
 		// behind title
-		context.fill(x1, y1, x3, y3, titleBgColor);
+		extractor.fill(x1, y1, x3, y3, titleBgColor);
 		
 		// window title
 		Font tr = MC.font;
 		String title = tr.substrByWidth(
 			net.minecraft.network.chat.Component.literal(window.getTitle()),
 			x3 - x1).getString();
-		context.guiRenderState.up();
-		context.text(tr, title, x1 + 2, y1 + 3, txtColor, false);
+		extractor.guiRenderState.up();
+		extractor.text(tr, title, x1 + 2, y1 + 3, txtColor, false);
 	}
 	
-	private void renderTitleBarButton(GuiGraphicsExtractor context, int x1,
+	private void renderTitleBarButton(GuiGraphicsExtractor extractor, int x1,
 		int y1, int x2, int y2, boolean hovering)
 	{
 		int x3 = x2 + 2;
@@ -744,15 +778,15 @@ public final class ClickGui
 		// button background
 		int buttonBgColor = RenderUtils.toIntColor(bgColor,
 			hovering ? opacity * 1.5F : opacity);
-		context.fill(x1, y1, x2, y2, buttonBgColor);
+		extractor.fill(x1, y1, x2, y2, buttonBgColor);
 		
 		// background between buttons
 		int windowBgColor = RenderUtils.toIntColor(acColor, opacity);
-		context.fill(x2, y1, x3, y2, windowBgColor);
+		extractor.fill(x2, y1, x3, y2, windowBgColor);
 		
 		// button outline
 		int outlineColor = RenderUtils.toIntColor(acColor, 0.5F);
-		RenderUtils.drawBorder2D(context, x1, y1, x2, y2, outlineColor);
+		RenderUtils.drawBorder2D(extractor, x1, y1, x2, y2, outlineColor);
 	}
 	
 	public float[] getBgColor()

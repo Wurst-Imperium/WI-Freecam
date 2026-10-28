@@ -222,7 +222,7 @@ public final class FreecamTranslator implements ResourceManagerReloadListener
 	 * Ensures that the given resource is from WI Freecam's built-in resource
 	 * pack, or at least from another client-side mod pretending to be WI
 	 * Freecam, as should be impossible for server-provided resource packs to
-	 * obtain a KnownPack of <code>fabric:wi_freecam</code>.
+	 * obtain a KnownPack of <code>vanilla:wi_freecam</code>.
 	 */
 	private boolean isBuiltInWiFreecamResourcePack(Resource resource)
 	{
@@ -230,11 +230,8 @@ public final class FreecamTranslator implements ResourceManagerReloadListener
 			.flatMap(Resource::knownPackInfo).orElse(null);
 		if(knownPack == null)
 			return false;
-			
-		// Note: Namespace can be "fabric" or "vanilla" depending on
-		// Fabric API version (changed in 0.139.3+1.21.11).
-		return ("fabric".equals(knownPack.namespace())
-			|| "vanilla".equals(knownPack.namespace()))
+		
+		return "vanilla".equals(knownPack.namespace())
 			&& "wi_freecam".equals(knownPack.id());
 	}
 }

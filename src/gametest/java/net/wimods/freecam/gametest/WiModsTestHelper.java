@@ -73,12 +73,14 @@ public enum WiModsTestHelper
 	 * get the timing right. Not useful for anything that's still in motion,
 	 * where delaying the screenshot would only cause it to drift further away
 	 * from the expected image.
+	 *
+	 * @return The number of retries it took to get a matching screenshot.
 	 */
-	public static void waitForScreenshotMatch(ClientGameTestContext context,
+	public static int waitForScreenshotMatch(ClientGameTestContext context,
 		String fileName, String templateUrl)
 	{
 		ThreadingImpl.checkOnGametestThread("waitForScreenshotMatch");
-		waitForScreenshotMatchImpl(context, fileName, templateUrl,
+		return waitForScreenshotMatchImpl(context, fileName, templateUrl,
 			ClientGameTestContext.DEFAULT_TIMEOUT);
 	}
 	
@@ -93,9 +95,8 @@ public enum WiModsTestHelper
 		return context.takeScreenshot(fileName);
 	}
 	
-	private static void waitForScreenshotMatchImpl(
-		ClientGameTestContext context, String fileName, String templateUrl,
-		int maxAttempts)
+	private static int waitForScreenshotMatchImpl(ClientGameTestContext context,
+		String fileName, String templateUrl, int maxAttempts)
 	{
 		NativeImage nativeTemplateImage = downloadImage(templateUrl);
 		boolean[][] mask = alphaChannelToMask(nativeTemplateImage);
@@ -127,7 +128,7 @@ public enum WiModsTestHelper
 			Vector2i result =
 				algo.findColor(maskedScreenshotImage, maskedTemplateImage);
 			if(result != null)
-				return;
+				return i;
 		}
 		
 		ghSummary("### Screenshot " + fileName + " does not match template");

@@ -439,7 +439,7 @@ public final class FreecamTest extends SingleplayerTest
 		WiFreecam.INSTANCE.getSettings().interactFrom
 			.setSelected(InteractFrom.CAMERA);
 		input.pressKey(GLFW.GLFW_KEY_U);
-		context.waitTicks(3);
+		waitForHandSwing();
 	}
 	
 	private Chicken spawnChicken(double z)
@@ -463,7 +463,7 @@ public final class FreecamTest extends SingleplayerTest
 		
 		String errorMessage = null;
 		if(state.getBlock() != Blocks.LEVER)
-			errorMessage = "Expected lever at " + x + ", " + y + ", " + z
+			errorMessage = "Expected lever at " + x + ", " + y + ", " + z + " ("
 				+ description + ") but found " + state;
 		else if(state.getValue(LeverBlock.POWERED) != expectedPowered)
 			errorMessage = "Lever at " + x + ", " + y + ", " + z + " ("
@@ -486,7 +486,8 @@ public final class FreecamTest extends SingleplayerTest
 			return;
 		
 		String errorMessage = "Chicken (" + description + ") expected "
-			+ (expectedDamaged ? "damaged" : "full health") + health;
+			+ (expectedDamaged ? "damaged" : "full health") + " but had health="
+			+ health;
 		
 		failWithScreenshot("freecam_entity_interaction_failed",
 			"Freecam entity interaction test failed", errorMessage);

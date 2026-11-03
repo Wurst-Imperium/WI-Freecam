@@ -323,10 +323,10 @@ public enum WiModsTestHelper
 			long handle = mc.getWindow().handle();
 			kb.invokeKeyPress(handle, InputConstants.PRESS,
 				new KeyEvent(key.getValue(), SDLKeyboard.SDL_GetKeyFromScancode(
-					key.getValue(), (short)0, false), modifiers));
+					key.getValue(), (short)0, false), modifiers, false));
 			kb.invokeKeyPress(handle, InputConstants.RELEASE,
 				new KeyEvent(key.getValue(), SDLKeyboard.SDL_GetKeyFromScancode(
-					key.getValue(), (short)0, false), modifiers));
+					key.getValue(), (short)0, false), modifiers, false));
 		});
 	}
 	
